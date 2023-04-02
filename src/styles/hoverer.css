@@ -1,0 +1,8 @@
+.mapHover path:hover {
+    stroke: cyan;
+}
+
+
+.mapHover g g:hover {
+    stroke: cyan;
+}
