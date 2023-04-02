@@ -2,7 +2,7 @@
   "name": "continents",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://palcsta.github.io/continents",
+  "homepage": "https://palcsta.github.io",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
