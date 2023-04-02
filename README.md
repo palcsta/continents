@@ -1,4 +1,4 @@
-# [World continents / Subcontinents / Country details / Interactive world map](https://palcsta.github.io/continents/build/)
+# [World continents / Subcontinents / Country details / Interactive world map](https://palcsta.github.io/continents/)
 ## Description. For local testing see: [setup instructions](../README.md)
 This geographical project aims to improve users political countries knowledge by showing the location of the country/subregions/continents as well as some of the interesting facts regarding each of the country.
 ### Usage
