@@ -6,7 +6,7 @@ const Map3 = (props) => {
   let svgRef = useRef(null);
   let mode = props.mode ? "black" : "white"
   
-  Array.from(svgRef.current.firstChild.children).forEach(c => {
+  svgRef.current ? Array.from(svgRef.current.firstChild.children).forEach(c => {
     c.onclick = (event) => { props.clickOne(c.id) }
     let myColorObj = props.mapColor.find(e => e.id === c.id)
     if (myColorObj) {
@@ -14,7 +14,7 @@ const Map3 = (props) => {
     } else {
       c.style.fill = mode
     }
-  })
+  }) : console.log("svgRef.current is null")
   
   useEffect(() => {
     Array.from(svgRef.current.firstChild.children).forEach(c => {
