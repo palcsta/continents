@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const countriesUrl = 'https://restcountries.com/v3/all' 
+const countriesUrl = 'https://restcountries.com/v3.1/all' 
 
 export const countriesService = async () => {
   try {

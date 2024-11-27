@@ -69,7 +69,7 @@ const SelectedFlags = (props) => {
                 return 0;
               })
             )}>Name</Button>
-	<>population:
+	<>Population of {"("+countriesToShowFlagsFor.length+") "}:
 	{numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</>
         </ButtonGroup>
       </div> : ""}
@@ -89,11 +89,13 @@ const SelectedFlags = (props) => {
         list.map((x, i) =>
           <div key={x.name.common} className="selectedBox" style={{
             borderColor: getColor(x.cca2)
+              , textAlign: 'center'
+              
           }} ><p onClick={() => (props.setShowDetail(x.cca2.toLowerCase()), window.scrollTo({
             top: 95,
             behavior: 'smooth',
           }))}>
-              {x.flag+""+x.name.common}<img className="selectedFlag" src={x.flags[0]} alt={""}></img>
+              {x.flag+""+x.name.common}{/*<img className="selectedFlag" src={x.flags[0]} alt={""}></img>*/}
             </p>
           </div>
         )}

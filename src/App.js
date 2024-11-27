@@ -36,8 +36,9 @@ function App() {
   const [user, setUser] = useState(null)
   const [blocs, setBlocs] = useState([])
   const [religions, setReligions] = useState([])
-  const [background,setBackground] = useState("yellow")
- // const [currencies, setCurrencies] = useState([])
+  const [background, setBackground] = useState("yellow")
+  const [mode, setMode] = useState(true)
+  // const [currencies, setCurrencies] = useState([])
 
 
   useEffect(() => {
@@ -54,25 +55,14 @@ function App() {
     const fetchReligions = async () => {
       await relService().then(res => {
         setReligions(res)
-        // console.log("REL IN FETCH ",religions)
+
       })
     }
     fetchReligions()
   }, [])
 
-  /*
-    useEffect(() => {
-    const fetchCurrency = async () => {
-      await currencyService().then(res => {
-        setCurrencies(res)
-        // console.log("REL IN FETCH ",religions)
-      })
-    }
-    fetchCurrency()
-  }, [])
-*/
   const updateBlocList = () => {
-    if(user){
+    if (user) {
       const fetchBlocs = async () => {
         await getBlocsService(`bearer ${user.token}`).then(res => {
           //console.log("got blocs: ",res)
@@ -94,7 +84,15 @@ function App() {
     }
     setShowDetail(id)
   }
-
+  const changeMode = () => {
+    if (mode) {
+      setMode(!mode)
+      setBackground("black")
+      
+    } else { 
+      setMode(!mode) 
+      setBackground("white")}}
+  
   const deselectOne = (id) => {
     if (showDetail === id) {
       setShowDetail(null)
@@ -131,7 +129,7 @@ function App() {
     //let newColors = ids.map(c => { return { id: c, color: ourColor } })
     setSelected(ids)
     //setMapColor([...mapColor.filter(c => !ids.includes(c.id)), ...newColors])
-  
+
   }
 
   const clickOne = (clickedId) => {
@@ -151,39 +149,43 @@ function App() {
     }
   }
 
-  return (<div style={{background: background}}>
+  return (<div style={{ background: background }}>
     <div className="container" style={{ border: "2px solid cyan", borderRadius: "5px" }}>
-      {<div hidden={loggingIn}><LoginForm user={user}  setUser={setUser} setBlocs={setBlocs} /></div>}
-      <div style={{display: 'flex',
-  alignItems: 'center',
-	align: 'center'}}>
-<Filter countries={countries} showDetail={showDetail} setShowDetail={setShowDetail} selected={selected} setSelected={setSelected} dkd={deselectKeepDetails} />
-      <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user}/>
-<Button hidden variant="warning" onClick={() =>setLoggingIn(!loggingIn)}>Login</Button>
-<Dropdown>
-  <Dropdown.Toggle variant="info" id="dropdown-basic">
-    Theme
-  </Dropdown.Toggle>
+      {<div hidden={loggingIn}><LoginForm user={user} setUser={setUser} setBlocs={setBlocs} /></div>}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        align: 'center'
+      }}>
+        <Filter countries={countries} showDetail={showDetail} setShowDetail={setShowDetail} selected={selected} setSelected={setSelected} dkd={deselectKeepDetails} />
+        <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user} />
+        <Button hidden variant="warning" onClick={() => setLoggingIn(!loggingIn)}>Login</Button>
+        <Button variant={mode ? "dark" : "light"} onClick={() => changeMode()}>{mode ? "🌙" : "☀️"}</Button>
+        <Dropdown hidden>
+          <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Theme
+          </Dropdown.Toggle>
 
-  <Dropdown.Menu>
-    <Dropdown.Item onClick={()=>setBackground(getNewColor)}>Random</Dropdown.Item>
-    <Dropdown.Item onClick={()=>setBackground("white")}>White</Dropdown.Item>
-    <Dropdown.Item onClick={()=>setBackground("yellow")}>Yellow</Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown>
-</div>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => setBackground(getNewColor)}>Random</Dropdown.Item>
+            <Dropdown.Item onClick={() => setBackground("white")}>White</Dropdown.Item>
+            <Dropdown.Item onClick={() => setBackground("yellow")}>Yellow</Dropdown.Item>
+            <Dropdown.Item onClick={() => setBackground("black")}>Dark Mode 🌙</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
 
 
 
       <CountryDetails countries={countries} religions={religions} /*currencies={currencies}*/ showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} />
-      <Map3 mapColor={mapColor} clickOne={clickOne} />
+      <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} />
       <div className="mapButtonGroup">
         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
-          <Button variant="warning" onClick={() => { setShowDetail(null); setSelected([]); setMapColor([]) }}><MdLayersClear/>Clear map</Button>
+          <Button variant="warning" onClick={() => { setShowDetail(null); setSelected([]); setMapColor([]) }}><MdLayersClear />Clear map</Button>
           <SaveBloc selected={selected} user={user} updateBlocList={updateBlocList} />
         </IconContext.Provider>
       </div>
-      <SelectedFlags  countries={countries} selected={selected} mapColor={mapColor} setShowDetail={setShowDetail} />
+      <SelectedFlags countries={countries} selected={selected} mapColor={mapColor} setShowDetail={setShowDetail} />
       <Footer />
     </div>
   </div>)

@@ -103,7 +103,7 @@ const CountryDetails = (props) => {
       return (
         <>
           <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer"
-            href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName==country.name.common?"":", "+country.name.official+""+""})</h2>
+            href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName==country.name.common?"":", "+country.name.official+""+""},{country.flag})</h2>
             <b>capital:</b> {country.capital}</div>
 <Button style={{margin:"1%"}} target="_blank" href={"https://youtube."+"com"+"/feed/trending?gl=" +country.cca2} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
             <Button style={{margin:"1%"}} target="_blank" href={country.maps.googleMaps} variant={"success"}>find in <br></br>Google Maps</Button>
@@ -112,7 +112,8 @@ const CountryDetails = (props) => {
           </div>
 
           <div style={style}>
-            <img style={flag} src={country.flags[0]} alt="" height="100" ></img>
+            <img style={flag} src={country.flags.svg} alt="" height="100" ></img>
+           
 			<img style={flag} 
 src={`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`}
 alt="" height="100" >
