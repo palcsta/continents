@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/continents/static/css/main.cb491be0.css",
-    "main.js": "/continents/static/js/main.67e01467.js",
+    "main.js": "/continents/static/js/main.f51a48fc.js",
     "index.html": "/continents/index.html",
     "main.cb491be0.css.map": "/continents/static/css/main.cb491be0.css.map",
-    "main.67e01467.js.map": "/continents/static/js/main.67e01467.js.map"
+    "main.f51a48fc.js.map": "/continents/static/js/main.f51a48fc.js.map"
   },
   "entrypoints": [
     "static/css/main.cb491be0.css",
-    "static/js/main.67e01467.js"
+    "static/js/main.f51a48fc.js"
   ]
 }
