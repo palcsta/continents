@@ -149,7 +149,7 @@ function App() {
     }
   }
 
-  return (<div style={{ background: background }}>
+  return (countries==undefined ? <div>Didn't fetch...<Button  variant="success" href="/">Reload</Button></div> :(<div style={{ background: background }}>
     <div className="container" style={{ border: "2px solid cyan", borderRadius: "5px" }}>
       {<div hidden={loggingIn}><LoginForm user={user} setUser={setUser} setBlocs={setBlocs} /></div>}
       <div style={{
@@ -188,7 +188,7 @@ function App() {
       <SelectedFlags countries={countries} selected={selected} mapColor={mapColor} setShowDetail={setShowDetail} />
       <Footer />
     </div>
-  </div>)
+  </div>))
 }
 
 export default App

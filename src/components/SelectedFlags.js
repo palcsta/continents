@@ -25,7 +25,7 @@ const numberChanger = (number) => {
 
 
 const SelectedFlags = (props) => {
-
+  
   let countriesToShowFlagsFor = props.countries.filter(x => props.selected.includes(x.cca2.toLowerCase()))
   const [show, setShow] = useState(countriesToShowFlagsFor)
   const getColor = (a2) => {

@@ -17,7 +17,7 @@ const getA2 = (country) => {
 }
 
 const CountriesDropdown = (props) => {
-
+  
   const continents = props.countries.filter(x => x.region !== "Polar").map(x => x.region).filter(unique)
 
   const polar = props.countries.filter(x => x.region === "Polar").map(x => x.name)
@@ -129,5 +129,5 @@ const CountriesDropdown = (props) => {
 
     </>
   )
-}
+  }
 export default CountriesDropdown

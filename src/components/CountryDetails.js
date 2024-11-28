@@ -23,147 +23,149 @@ const l = {
 
 
 const CountryDetails = (props) => {
+  if (props.countries !== undefined) {
 
-  let color = "black"
-  if (props.showDetail) {
-    let foundColorObj = props.mapColor.find(e => e.id === props.showDetail)
-    if (foundColorObj) {
-      color = foundColorObj.color
+    let color = "black"
+    if (props.showDetail) {
+      let foundColorObj = props.mapColor.find(e => e.id === props.showDetail)
+      if (foundColorObj) {
+        color = foundColorObj.color
+      }
     }
-  }
 
-  const style = {
-    display: 'flex',
-    border: '3px solid ' + color,
-    align: "center",
-    "borderRadius": "10px"
-  }
-
-  const flag = {
-    border: '2px solid black',
-    "borderRadius": "5px",
-    width: "175",
-    height: "120"
-  }
-  //const relUrl = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-religion.json"
-
-
-
-
-  let country = props.countries.find(c => c.cca2.toLowerCase() === props.showDetail)
-  let isSelected = props.selected.includes(props.showDetail)
-  let rel = (country && props.religions) ? props.religions.filter(x => x.country == country.name.common) : "no religion data found"
-  let currency = (country && props.currencies) ? props.currencies.filter(x => country.name.includes(x.country)) : "no currency data"
-
-  function calcTime(/*city, */offset) {
-   // console.log("offset ",isNaN(offset))
-
-    // create Date object for current location
-    let d = new Date();
-   
-    // convert to msec
-    // add local time zone offset
-    // get UTC time in msec
-    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-   
-    // create new Date object for different city
-    // using supplied offset
-    let nd = new Date()
-    if(!isNaN(offset)){
-     nd = new Date(utc + (3600000*offset));
-    }else{
-      nd = new Date(utc);
+    const style = {
+      display: 'flex',
+      border: '3px solid ' + color,
+      align: "center",
+      "borderRadius": "10px"
     }
-    
-   
-    // return time as a string
-    return nd.getHours()+":"+nd.getMinutes()//"time is " + nd.toString();
 
-}
+    const flag = {
+      border: '2px solid black',
+      "borderRadius": "5px",
+      width: "175",
+      height: "120"
+    }
+    //const relUrl = "https://raw.githubusercontent.com/samayo/country-json/master/src/country-by-religion.json"
 
 
 
 
-  //const [religion, setReligion] = useState(country ? props.religions.filter(x => x.country==country.name): "no religion data")
-  //const [currency, setCurrency] = useState(" no currency data...")
-  const deselectMe = () => {
-    props.dkd(country.cca2.toLowerCase())
-  }
+    let country = props.countries.find(c => c.cca2.toLowerCase() === props.showDetail)
+    let isSelected = props.selected.includes(props.showDetail)
+    let rel = (country && props.religions) ? props.religions.filter(x => x.country == country.name.common) : "no religion data found"
+    let currency = (country && props.currencies) ? props.currencies.filter(x => country.name.includes(x.country)) : "no currency data"
 
-  const selectMe = () => {
-    props.selectOne(country.cca2.toLowerCase())
-  }
+    function calcTime(/*city, */offset) {
+      // console.log("offset ",isNaN(offset))
 
-  const content = () => {
-    //() => selectMe()
-    if (props.showDetail && country && rel) {
-	//() => props.selectOne(country.cca2.toLowerCase())
-     // console.log("REL is    ", rel)
-      // setReligion(props.religions.filter(x => x.country==country.name))
-      return (
-        <>
-          <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer"
-            href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName==country.name.common?"":", "+country.name.official+""+""},{country.flag})</h2>
-            <b>capital:</b> {country.capital}</div>
-<Button style={{margin:"1%"}} target="_blank" href={"https://youtube."+"com"+"/feed/trending?gl=" +country.cca2} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
-            <Button style={{margin:"1%"}} target="_blank" href={country.maps.googleMaps} variant={"success"}>find in <br></br>Google Maps</Button>
-            <Button style={{margin:"1%"}} variant={isSelected ? "outline-warning" : "outline-primary"}
-              onClick={() => { isSelected ? deselectMe() : selectMe() }}>{isSelected ? <>Deselect<br></br>on map</> : <>Select<br></br>on map</>}</Button>
-          </div>
+      // create Date object for current location
+      let d = new Date();
 
-          <div style={style}>
-            <img style={flag} src={country.flags.svg} alt="" height="100" ></img>
-           
-			<img style={flag} 
-src={`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`}
-alt="" height="100" >
-			</img>
-            <div >
-              <i><b>pop.</b></i>: {numberChanger(country.population)}
-              <br></br>
-              <b>area:</b> {numberChanger(country.area)} km<sup>2</sup>
-              <br></br>
-              <b>region:</b> {country.subregion}
-              <br></br>
-              <b>time:</b>{/*""+new Date(
+      // convert to msec
+      // add local time zone offset
+      // get UTC time in msec
+      let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+      // create new Date object for different city
+      // using supplied offset
+      let nd = new Date()
+      if (!isNaN(offset)) {
+        nd = new Date(utc + (3600000 * offset));
+      } else {
+        nd = new Date(utc);
+      }
+
+
+      // return time as a string
+      return nd.getHours() + ":" + nd.getMinutes()//"time is " + nd.toString();
+
+    }
+
+
+
+
+    //const [religion, setReligion] = useState(country ? props.religions.filter(x => x.country==country.name): "no religion data")
+    //const [currency, setCurrency] = useState(" no currency data...")
+    const deselectMe = () => {
+      props.dkd(country.cca2.toLowerCase())
+    }
+
+    const selectMe = () => {
+      props.selectOne(country.cca2.toLowerCase())
+    }
+
+    const content = () => {
+      //() => selectMe()
+      if (props.showDetail && country && rel) {
+        //() => props.selectOne(country.cca2.toLowerCase())
+        // console.log("REL is    ", rel)
+        // setReligion(props.religions.filter(x => x.country==country.name))
+        return (
+          <>
+            <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer"
+              href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName == country.name.common ? "" : ", " + country.name.official + "" + ""},{country.flag})</h2>
+              <b>capital:</b> {country.capital}</div>
+              <Button style={{ margin: "1%" }} target="_blank" href={"https://youtube." + "com" + "/feed/trending?gl=" + country.cca2} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
+              <Button style={{ margin: "1%" }} target="_blank" href={country.maps.googleMaps} variant={"success"}>find in <br></br>Google Maps</Button>
+              <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
+                onClick={() => { isSelected ? deselectMe() : selectMe() }}>{isSelected ? <>Deselect<br></br>on map</> : <>Select<br></br>on map</>}</Button>
+            </div>
+
+            <div style={style}>
+              <img style={flag} src={country.flags.svg} alt="" height="100" ></img>
+
+              <img style={flag}
+                src={`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`}
+                alt="" height="100" >
+              </img>
+              <div >
+                <i><b>pop.</b></i>: {numberChanger(country.population)}
+                <br></br>
+                <b>area:</b> {numberChanger(country.area)} km<sup>2</sup>
+                <br></br>
+                <b>region:</b> {country.subregion}
+                <br></br>
+                <b>time:</b>{/*""+new Date(
                 new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getUTCFullYear()+
                 " "+new Date().getHours()+":"+new Date().getMinutes()+" "
                 +country.timezones[0])*/
-              
 
-              calcTime(/*country.capital,*/country.timezones[0].substring(3,6)[0]+country.timezones[0].substring(3,6)[2])
-              //+"("+country.timezones[0]+")"
-              }
-            </div>
 
-            <div>
-              <div><b><i> <span style={l}>language(s):</span></i></b>
-                {Object.values(country.languages).map(x => <>|
-                <a target="_blank" href={"https://wikipedia.org/wiki/" + x + "_language"} key={x}>{x}</a>| </>)}
-              </div><div>
-                <n><b><span style={l}>Religion:</span></b>{rel[0] !== undefined ? rel[0].religion : " no data "}</n>
-                <br></br>
-                <n><b><span style={l}>Currency:</span></b>{/*currency[0] !== undefined ? currency[0].currency_code : "no data"*/
-                Object.values(country.currencies)[0].code
-                }{Object.values(country.currencies)[0].symbol==null?"":"("+Object.values(country.currencies)[0].symbol+")"}</n>
-                <br></br>
-                <><button hidden onClick={() => props.setShowDetail(null)}>hide</button></>
+                  calcTime(/*country.capital,*/country.timezones[0].substring(3, 6)[0] + country.timezones[0].substring(3, 6)[2])
+                  //+"("+country.timezones[0]+")"
+                }
+              </div>
+
+              <div>
+                <div><b><i> <span style={l}>language(s):</span></i></b>
+                  {Object.values(country.languages).map(x => <>|
+                    <a target="_blank" href={"https://wikipedia.org/wiki/" + x + "_language"} key={x}>{x}</a>| </>)}
+                </div><div>
+                  <n><b><span style={l}>Religion:</span></b>{rel[0] !== undefined ? rel[0].religion : " no data "}</n>
+                  <br></br>
+                  <n><b><span style={l}>Currency:</span></b>{/*currency[0] !== undefined ? currency[0].currency_code : "no data"*/
+                    Object.values(country.currencies)[0].code
+                  }{Object.values(country.currencies)[0].symbol == null ? "" : "(" + Object.values(country.currencies)[0].symbol + ")"}</n>
+                  <br></br>
+                  <><button hidden onClick={() => props.setShowDetail(null)}>hide</button></>
+                </div>
+
               </div>
 
             </div>
-
-          </div>
-        </>
-      )
-    } else {
-      return (<></>)
+          </>
+        )
+      } else {
+        return (<></>)
+      }
     }
-  }
 
-  return (
-    <>
-      {content()}
-    </>
-  )
+    return (
+      <>
+        {content()}
+      </>
+    )
+  } else { return (<>NO DATA in CountryDetails</>) }
 }
 export default CountryDetails
