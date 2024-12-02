@@ -16,6 +16,8 @@ import SelectedFlags from './components/SelectedFlags'
 import SaveBloc from './components/SaveBloc'
 import Footer from './components/Footer'
 
+import ua from './ua.svg'
+
 import './styles/MapBottomButtons.css'
 import './styles/SaveBloc.css'
 
@@ -88,11 +90,13 @@ function App() {
     if (mode) {
       setMode(!mode)
       setBackground("black")
-      
-    } else { 
-      setMode(!mode) 
-      setBackground("white")}}
-  
+
+    } else {
+      setMode(!mode)
+      setBackground("white")
+    }
+  }
+
   const deselectOne = (id) => {
     if (showDetail === id) {
       setShowDetail(null)
@@ -149,7 +153,7 @@ function App() {
     }
   }
 
-  return (countries==undefined ? <div>Didn't fetch...<Button  variant="success" href="/">Reload</Button></div> :(<div style={{ background: background }}>
+  return (countries == undefined ? <div>Didn't fetch...<Button variant="success" href="/">Reload</Button></div> : (<div style={{ background: background }}>
     <div className="container" style={{ border: "2px solid cyan", borderRadius: "5px" }}>
       {<div hidden={loggingIn}><LoginForm user={user} setUser={setUser} setBlocs={setBlocs} /></div>}
       <div style={{
@@ -177,7 +181,7 @@ function App() {
 
 
 
-      <CountryDetails countries={countries} religions={religions} /*currencies={currencies}*/ showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} />
+      <CountryDetails countries={countries} religions={religions} showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} />
       <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} />
       <div className="mapButtonGroup">
         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>

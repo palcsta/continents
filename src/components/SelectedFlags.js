@@ -25,7 +25,7 @@ const numberChanger = (number) => {
 
 
 const SelectedFlags = (props) => {
-  
+
   let countriesToShowFlagsFor = props.countries.filter(x => props.selected.includes(x.cca2.toLowerCase()))
   const [show, setShow] = useState(countriesToShowFlagsFor)
   const getColor = (a2) => {
@@ -49,11 +49,11 @@ const SelectedFlags = (props) => {
 
 
 
-      { show !== undefined && countriesToShowFlagsFor.length !== 0 ? <div style={{ "textAlign": "right","margin":"0.2em" }}>
-        <p style={{"display":"inline","margin":"0.2em 0.5em 0.2em 0.2em"}}>
-        Sort by:
+      {show !== undefined && countriesToShowFlagsFor.length !== 0 ? <div style={{ "textAlign": "right", "margin": "0.2em" }}>
+        <p style={{ "display": "inline", "margin": "0.2em 0.5em 0.2em 0.2em" }}>
+          Sort by:
         </p>
-      <ButtonGroup>
+        <ButtonGroup>
           <Button onClick={() => setShow(
             countriesToShowFlagsFor
               .sort((a, b) => parseFloat(b.population) - parseFloat(a.population)))}
@@ -69,8 +69,8 @@ const SelectedFlags = (props) => {
                 return 0;
               })
             )}>Name</Button>
-	<>Population of {"("+countriesToShowFlagsFor.length+") "}:
-	{numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</>
+          <>Population of {"(" + countriesToShowFlagsFor.length + ") "}:
+            {numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</>
         </ButtonGroup>
       </div> : ""}
 
@@ -82,20 +82,20 @@ const SelectedFlags = (props) => {
           top: 95,
           behavior: 'smooth',
         }))}>
-            {x.name.common}<img className="selectedFlag" src={x.flags[0]} alt={x.name.common}></img>
+            {x.name.common+" "+x.flag} 
           </p>
         </div>
       ) :
         list.map((x, i) =>
           <div key={x.name.common} className="selectedBox" style={{
             borderColor: getColor(x.cca2)
-              , textAlign: 'center'
-              
+            , textAlign: 'center'
+
           }} ><p onClick={() => (props.setShowDetail(x.cca2.toLowerCase()), window.scrollTo({
             top: 95,
             behavior: 'smooth',
           }))}>
-              {x.flag+""+x.name.common}{/*<img className="selectedFlag" src={x.flags[0]} alt={""}></img>*/}
+              {x.flag + "" + x.name.common}{/*<img className="selectedFlag" src={x.flags[0]} alt={""}></img>*/}
             </p>
           </div>
         )}

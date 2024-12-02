@@ -17,7 +17,7 @@ const numberChanger = (number) => {
 
 }
 
-const l = {
+const toLeft = {
   "paddingLeft": "3em"
 }
 
@@ -25,7 +25,7 @@ const l = {
 const CountryDetails = (props) => {
   if (props.countries !== undefined) {
 
-    let color = "black"
+    let color = "blue"
     if (props.showDetail) {
       let foundColorObj = props.mapColor.find(e => e.id === props.showDetail)
       if (foundColorObj) {
@@ -113,10 +113,12 @@ const CountryDetails = (props) => {
             </div>
 
             <div style={style}>
-              <img style={flag} src={country.flags.svg} alt="" height="100" ></img>
+              <img style={flag} src={require("../../backup/flag/"+country.cca2.toLowerCase()+".svg")
+                /*country.flags.svg*/} alt="" height="100" ></img>
 
               <img style={flag}
-                src={`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`}
+                src={require("../../backup/coa/"+country.cca2.toLowerCase()+".svg")
+                  /*`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`*/}
                 alt="" height="100" >
               </img>
               <div >
@@ -126,7 +128,7 @@ const CountryDetails = (props) => {
                 <br></br>
                 <b>region:</b> {country.subregion}
                 <br></br>
-                <b>time:</b>{/*""+new Date(
+                <b>time:{"../../backup/coa/"+country.cca2.toLowerCase()+".svg"}</b>{/*""+new Date(
                 new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getUTCFullYear()+
                 " "+new Date().getHours()+":"+new Date().getMinutes()+" "
                 +country.timezones[0])*/
@@ -138,13 +140,13 @@ const CountryDetails = (props) => {
               </div>
 
               <div>
-                <div><b><i> <span style={l}>language(s):</span></i></b>
+                <div><b><i> <span style={toLeft}>language(s):</span></i></b>
                   {Object.values(country.languages).map(x => <>|
                     <a target="_blank" href={"https://wikipedia.org/wiki/" + x + "_language"} key={x}>{x}</a>| </>)}
                 </div><div>
-                  <n><b><span style={l}>Religion:</span></b>{rel[0] !== undefined ? rel[0].religion : " no data "}</n>
+                  <n><b><span style={toLeft}>Religion:</span></b>{rel[0] !== undefined ? rel[0].religion : " no data "}</n>
                   <br></br>
-                  <n><b><span style={l}>Currency:</span></b>{/*currency[0] !== undefined ? currency[0].currency_code : "no data"*/
+                  <n><b><span style={toLeft}>Currency:</span></b>{/*currency[0] !== undefined ? currency[0].currency_code : "no data"*/
                     Object.values(country.currencies)[0].code
                   }{Object.values(country.currencies)[0].symbol == null ? "" : "(" + Object.values(country.currencies)[0].symbol + ")"}</n>
                   <br></br>
