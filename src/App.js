@@ -16,7 +16,7 @@ import SelectedFlags from './components/SelectedFlags'
 import SaveBloc from './components/SaveBloc'
 import Footer from './components/Footer'
 
-import ua from './ua.svg'
+
 
 import './styles/MapBottomButtons.css'
 import './styles/SaveBloc.css'

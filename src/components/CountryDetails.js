@@ -128,14 +128,9 @@ const CountryDetails = (props) => {
                 <br></br>
                 <b>region:</b> {country.subregion}
                 <br></br>
-                <b>time:{"../../backup/coa/"+country.cca2.toLowerCase()+".svg"}</b>{/*""+new Date(
-                new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getUTCFullYear()+
-                " "+new Date().getHours()+":"+new Date().getMinutes()+" "
-                +country.timezones[0])*/
-
-
-                  calcTime(/*country.capital,*/country.timezones[0].substring(3, 6)[0] + country.timezones[0].substring(3, 6)[2])
-                  //+"("+country.timezones[0]+")"
+                <b>time:{""}</b>{
+                  calcTime(country.timezones[0].substring(3, 6)[0] + country.timezones[0].substring(3, 6)[2])
+                  
                 }
               </div>
 
