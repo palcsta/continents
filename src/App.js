@@ -165,6 +165,7 @@ function App() {
         <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user} />
         <Button hidden variant="warning" onClick={() => setLoggingIn(!loggingIn)}>Login</Button>
         <Button variant={mode ? "dark" : "light"} onClick={() => changeMode()}>{mode ? "🌙" : "☀️"}</Button>
+        <Button href={"https://palcsta.github.io"}>{"🏠"}</Button>
         <Dropdown hidden>
           <Dropdown.Toggle variant="info" id="dropdown-basic">
             Theme
