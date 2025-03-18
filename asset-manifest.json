@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/continents/static/css/main.cb491be0.css",
-    "main.js": "/continents/static/js/main.e0679782.js",
+    "main.js": "/continents/static/js/main.6cb072d7.js",
     "static/media/ke.svg": "/continents/static/media/ke.e46c4856af97b1ffba7f.svg",
     "static/media/be.svg": "/continents/static/media/be.bd884fd68fd30c1cb1c6.svg",
     "static/media/rs.svg": "/continents/static/media/rs.62d7e40bc5e8673ad508.svg",
@@ -50,7 +50,7 @@
     "static/media/vg.svg": "/continents/static/media/vg.723c126df5727ae1ebf1.svg",
     "static/media/fj.svg": "/continents/static/media/fj.499873040aae1ca24dfd.svg",
     "static/media/fk.svg": "/continents/static/media/fk.d91271ffd9f983cc1339.svg",
-    "static/media/af.svg": "/continents/static/media/af.463e82f3def6fda87731.svg",
+    "static/media/af.svg": "/continents/static/media/af.007ead7172c195c9621e.svg",
     "static/media/my.svg": "/continents/static/media/my.656a991ddaad9ac4027d.svg",
     "static/media/tv.svg": "/continents/static/media/tv.615f49d7c1c05c4ce29b.svg",
     "static/media/sc.svg": "/continents/static/media/sc.2d5633831ac95f433236.svg",
@@ -197,7 +197,6 @@
     "static/media/qa.svg": "/continents/static/media/qa.88a029f999d24c635a4e.svg",
     "static/media/bd.svg": "/continents/static/media/bd.b90eb8174d1a82bd9452.svg",
     "static/media/bl.svg": "/continents/static/media/bl.3b3f785be64a989cd904.svg",
-    "static/media/Flag_of_the_Taliban.svg": "/continents/static/media/Flag_of_the_Taliban.007ead7172c195c9621e.svg",
     "static/media/ws.svg": "/continents/static/media/ws.8c3fc3b948ea9cb531ca.svg",
     "static/media/tg.svg": "/continents/static/media/tg.987385d51d0d11bdfcdd.svg",
     "static/media/yt.svg": "/continents/static/media/yt.ce291a472450f691c9a3.svg",
@@ -230,7 +229,7 @@
     "static/media/tc.svg": "/continents/static/media/tc.d60a2028ec56ec15a45a.svg",
     "static/media/ba.svg": "/continents/static/media/ba.574bb335485435c58d90.svg",
     "static/media/cc.svg": "/continents/static/media/cc.7a5fd3461647e79c6d08.svg",
-    "static/media/ua.svg": "/continents/static/media/ua.8a14016336aab1d5b16e40ec291b1275.svg",
+    "static/media/ua.svg": "/continents/static/media/ua.8a14016336aab1d5b16e.svg",
     "static/media/si.svg": "/continents/static/media/si.6de5935d75318e68c1d0.svg",
     "static/media/de.svg": "/continents/static/media/de.ed5be69598a5a9c32bc8.svg",
     "static/media/sk.svg": "/continents/static/media/sk.7a8310e3157ab554a98d.svg",
@@ -255,10 +254,10 @@
     "static/media/cg.svg": "/continents/static/media/cg.75cf3ccf4b3e044f6147.svg",
     "static/media/mf.svg": "/continents/static/media/mf.2b73cc5a99eb2870654b.svg",
     "main.cb491be0.css.map": "/continents/static/css/main.cb491be0.css.map",
-    "main.e0679782.js.map": "/continents/static/js/main.e0679782.js.map"
+    "main.6cb072d7.js.map": "/continents/static/js/main.6cb072d7.js.map"
   },
   "entrypoints": [
     "static/css/main.cb491be0.css",
-    "static/js/main.e0679782.js"
+    "static/js/main.6cb072d7.js"
   ]
 }
