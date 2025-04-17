@@ -113,8 +113,8 @@ const CountryDetails = (props) => {
             </div>
 
             <div style={style}>
-              <img style={flag} src={require("../../backup/flag/"+country.cca2.toLowerCase()+".svg")
-                /*country.flags.svg*/} alt="" height="100" ></img>
+              {<img style={flag} src={require("../../backup/flag/"+country.cca2.toLowerCase()+".svg")
+                /*country.flags.svg*/} alt="" height="100" ></img>}
 
               <img style={flag}
                 src={require("../../backup/coa/"+country.cca2.toLowerCase()+".svg")
