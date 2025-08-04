@@ -106,7 +106,7 @@ const CountryDetails = (props) => {
             <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer"
               href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName == country.name.common ? "" : ", " + country.name.official + "" + ""},{country.flag})</h2>
               <b>capital:</b> {country.capital}</div>
-              <Button style={{ margin: "1%" }} target="_blank" href={"https://youtube." + "com" + "/feed/trending?gl=" + country.cca2} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
+              <Button style={{ margin: "1%" }} target="_blank" href={"https://yt-trends.iamrohit.in/" + country.name.common} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
               <Button style={{ margin: "1%" }} target="_blank" href={country.maps.googleMaps} variant={"success"}>find in <br></br>Google Maps</Button>
               <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
                 onClick={() => { isSelected ? deselectMe() : selectMe() }}>{isSelected ? <>Deselect<br></br>on map</> : <>Select<br></br>on map</>}</Button>
