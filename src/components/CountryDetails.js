@@ -33,11 +33,14 @@ const CountryDetails = (props) => {
       }
     }
 
+    const textColor = props.mode ? 'black' : '#e0e0e0'
+
     const style = {
       display: 'flex',
       border: '3px solid ' + color,
       align: "center",
-      "borderRadius": "10px"
+      "borderRadius": "10px",
+      color: textColor
     }
 
     const flag = {

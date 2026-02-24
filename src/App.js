@@ -6,6 +6,7 @@ import { Dropdown } from 'react-bootstrap';
 import Map3 from './components/Map3'
 import CountriesDropdown from './components/Dropdown'
 import BlocDropdown from './components/BlocDropdown'
+import ReligionDropdown from './components/ReligionDropdown'
 import CountryDetails from './components/CountryDetails'
 import Filter from './components/Filter'
 import { countriesService } from './services/countriesService'
@@ -43,6 +44,32 @@ function App() {
   const [mode, setMode] = useState(true)
   // const [currencies, setCurrencies] = useState([])
 
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-color-scheme: dark)')
+    const useDarkMode = query.matches
+    
+    if (useDarkMode) {
+      setMode(false)
+      setBackground("black")
+    } else {
+      setMode(true)
+      setBackground("white")
+    }
+
+    const handler = (e) => {
+      if (e.matches) {
+        setMode(false)
+        setBackground("black")
+      } else {
+        setMode(true)
+        setBackground("white")
+      }
+    }
+    
+    query.addEventListener('change', handler)
+    return () => query.removeEventListener('change', handler)
+  }, [])
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -165,6 +192,7 @@ function App() {
         <Filter countries={countries} showDetail={showDetail} setShowDetail={setShowDetail} selected={selected} setSelected={setSelected} dkd={deselectKeepDetails} />
         <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user} />
         <BlocDropdown countries={countries} selectMany={selectMany} />
+        <ReligionDropdown countries={countries} religions={religions} selectMany={selectMany} selectOne={selectOne} />
         <Button hidden variant="warning" onClick={() => setLoggingIn(!loggingIn)}>Login</Button>
         <Button variant={mode ? "dark" : "light"} onClick={() => changeMode()}>{mode ? "🌙" : "☀️"}</Button>
         <Button href={"https://palcsta.github.io"}>{"🏠"}</Button>
@@ -186,7 +214,7 @@ function App() {
 
 
 
-      <CountryDetails countries={countries} religions={religions} showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} />
+      <CountryDetails countries={countries} religions={religions} showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} mode={mode} />
       <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} />
       <div className="mapButtonGroup">
         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
