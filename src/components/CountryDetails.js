@@ -133,12 +133,12 @@ const CountryDetails = (props) => {
 
             <div style={style}>
               {<img style={flag} src={require("../../backup/flag/"+country.cca2.toLowerCase()+".svg")
-                /*country.flags.svg*/} alt="" height="100" ></img>}
+                /*country.flags.svg*/} alt="" height="100" loading="lazy"></img>}
 
               <img style={flag}
                 src={require("../../backup/coa/"+country.cca2.toLowerCase()+".svg")
                   /*`https://mainfacts.com/media/images/coats_of_arms/${country.cca2.toLowerCase()}.svg`*/}
-                alt="" height="100" >
+                alt="" height="100" loading="lazy">
               </img>
               <div >
                 <i><b>pop.</b></i>: {numberChanger(country.population)}
