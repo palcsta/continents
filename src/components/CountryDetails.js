@@ -98,7 +98,23 @@ const CountryDetails = (props) => {
       props.selectOne(country.cca2.toLowerCase())
     }
 
+    const isWater = props.showDetail && (props.showDetail.includes('ocean') || props.showDetail.includes('sea'))
+    
     const content = () => {
+      if (isWater) {
+        const name = props.showDetail.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        const type = props.showDetail.includes('ocean') ? 'Ocean' : 'Sea'
+        return (
+          <div style={style}>
+            <div>
+              <h2>{name}</h2>
+              <b>Classification:</b> {type}
+              <br />
+              <p>This is a major geographic body of water.</p>
+            </div>
+          </div>
+        )
+      }
       //() => selectMe()
       if (props.showDetail && country && rel) {
         //() => props.selectOne(country.cca2.toLowerCase())

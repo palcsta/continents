@@ -11,6 +11,8 @@ const Map3 = (props) => {
     let myColorObj = props.mapColor.find(e => e.id === c.id)
     if (myColorObj) {
       c.style.fill = myColorObj.color
+    } else if (c.getAttribute('data-type') === 'ocean' || c.getAttribute('data-type') === 'sea') {
+      c.style.fill = '#a0d8f1' // light blue for water
     } else {
       c.style.fill = mode
     }
@@ -22,6 +24,8 @@ const Map3 = (props) => {
       let myColorObj = props.mapColor.find(e => e.id === c.id)
       if (myColorObj) {
         c.style.fill = myColorObj.color
+      } else if (c.getAttribute('data-type') === 'ocean' || c.getAttribute('data-type') === 'sea') {
+        c.style.fill = '#a0d8f1'
       } else {
         c.style.fill = mode
       }
@@ -37,7 +41,43 @@ const Map3 = (props) => {
       className="mapHover"
     >
       <g >
-
+        {/* Ocean and Sea Paths */}
+        <rect id="arctic-ocean" data-type="ocean" x="30.767" y="241.591" width="784.077" height="51" opacity="0.8">
+          <title>Arctic Ocean</title>
+        </rect>
+        <rect id="southern-ocean" data-type="ocean" x="30.767" y="623" width="784.077" height="77" opacity="0.8">
+          <title>Southern Ocean</title>
+        </rect>
+        <rect id="atlantic-ocean" data-type="ocean" x="270" y="292.591" width="195" height="330.409" opacity="0.8">
+          <title>Atlantic Ocean</title>
+        </rect>
+        <rect id="pacific-ocean-west" data-type="ocean" x="30.767" y="292.591" width="239.233" height="330.409" opacity="0.8">
+          <title>Pacific Ocean</title>
+        </rect>
+        <rect id="pacific-ocean-east" data-type="ocean" x="682" y="292.591" width="132.844" height="330.409" opacity="0.8">
+          <title>Pacific Ocean</title>
+        </rect>
+        <rect id="indian-ocean" data-type="ocean" x="465" y="292.591" width="217" height="330.409" opacity="0.8">
+          <title>Indian Ocean</title>
+        </rect>
+        <rect id="mediterranean-sea" data-type="sea" x="421" y="356" width="76" height="38" opacity="0.9">
+          <title>Mediterranean Sea</title>
+        </rect>
+        <rect id="caspian-sea" data-type="sea" x="525" y="351" width="14" height="28" opacity="0.9">
+          <title>Caspian Sea</title>
+        </rect>
+        <rect id="black-sea" data-type="sea" x="480" y="351" width="32" height="18" opacity="0.9">
+          <title>Black Sea</title>
+        </rect>
+        <rect id="red-sea" data-type="sea" x="491" y="394" width="24" height="46" opacity="0.9">
+          <title>Red Sea</title>
+        </rect>
+        <rect id="gulf-of-mexico" data-type="sea" x="209" y="394" width="36" height="30" opacity="0.9">
+          <title>Gulf of Mexico</title>
+        </rect>
+        <rect id="caribbean-sea" data-type="sea" x="230" y="414" width="61" height="33" opacity="0.9">
+          <title>Caribbean Sea</title>
+        </rect>
         <path id="ae"
           d="M528.466,468.135l0.753,3.008l8.522,0.752l0.596-6.172l1.644-0.897l0.448-2.257l-2.688,0.753l-2.99,4.521L528.466,468.135L528.466,468.135z" />
         <path id="af"

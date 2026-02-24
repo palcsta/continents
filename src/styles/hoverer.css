@@ -1,8 +1,10 @@
-.mapHover path:hover {
+.mapHover path:hover, .mapHover rect:hover {
     stroke: cyan;
+    cursor: pointer;
 }
 
 
 .mapHover g g:hover {
     stroke: cyan;
+    cursor: pointer;
 }
