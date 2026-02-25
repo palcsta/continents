@@ -227,7 +227,7 @@ function App() {
           <SaveBloc selected={selected} user={user} updateBlocList={updateBlocList} />
         </IconContext.Provider>
       </div>
-      <SelectedFlags countries={countries} selected={selected} mapColor={mapColor} setShowDetail={setShowDetail} />
+      <SelectedFlags countries={countries} selected={selected} mapColor={mapColor} setShowDetail={setShowDetail} mode={mode} />
       <Footer />
     </div>
   </div>))

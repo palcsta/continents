@@ -39,13 +39,11 @@ const SelectedFlags = (props) => {
       .sort((a, b) => parseFloat(b.population) - parseFloat(a.population
       ))
 
-
-
-
+  const textColor = props.mode ? 'black' : '#f8f9fa'
 
   return (
 
-    <div>
+    <div style={{ color: textColor }}>
 
 
 
@@ -69,8 +67,8 @@ const SelectedFlags = (props) => {
                 return 0;
               })
             )}>Name</Button>
-          <>Population of {"(" + countriesToShowFlagsFor.length + ") "}:
-            {numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</>
+          <span style={{ marginLeft: '10px' }}>Population of {"(" + countriesToShowFlagsFor.length + ") "}:
+            {numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</span>
         </ButtonGroup>
       </div> : ""}
 

@@ -33,7 +33,8 @@ const CountryDetails = (props) => {
       }
     }
 
-    const textColor = props.mode ? 'black' : '#e0e0e0'
+    const textColor = props.mode ? 'black' : '#f8f9fa'
+    const linkColor = props.mode ? '#007bff' : '#4dabff'
 
     const style = {
       display: 'flex',
@@ -122,7 +123,7 @@ const CountryDetails = (props) => {
         // setReligion(props.religions.filter(x => x.country==country.name))
         return (
           <>
-            <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer"
+            <div style={style}> <div><h2><a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }}
               href={`https://en.wikipedia.org/wiki/${country.name.common}`}> {country.name.common}</a>({country.cca2}{country.nativeName == country.name.common ? "" : ", " + country.name.official + "" + ""},{country.flag})</h2>
               <b>capital:</b> {country.capital}</div>
               <Button style={{ margin: "1%" }} target="_blank" href={"https://yt-trends.iamrohit.in/" + country.name.common} variant={"danger"}>YouTube<br></br>trending<br></br></Button>
@@ -156,7 +157,7 @@ const CountryDetails = (props) => {
               <div>
                 <div><b><i> <span style={toLeft}>language(s):</span></i></b>
                   {Object.values(country.languages).map(x => <>|
-                    <a target="_blank" href={"https://wikipedia.org/wiki/" + x + "_language"} key={x}>{x}</a>| </>)}
+                    <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"} key={x}>{x}</a>| </>)}
                 </div><div>
                   <n><b><span style={toLeft}>Religion:</span></b>{rel[0] !== undefined ? rel[0].religion : " no data "}</n>
                   <br></br>
