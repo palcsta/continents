@@ -31,7 +31,14 @@ const LanguageDropdown = ({ countries, selectMany, selectOne }) => {
   // Filter languages spoken in 2 or more countries
   const multiCountryLanguages = Object.keys(languageMap)
     .filter(lang => languageMap[lang].countries.length >= 2)
-    .sort((a, b) => languageMap[b].totalPopulation - languageMap[a].totalPopulation) // Sort by total population (descending)
+    .sort((a, b) => {
+      // Primary sort: number of countries (descending)
+      const countDiff = languageMap[b].countries.length - languageMap[a].countries.length
+      if (countDiff !== 0) return countDiff
+      
+      // Secondary sort: total population (descending)
+      return languageMap[b].totalPopulation - languageMap[a].totalPopulation
+    })
 
   return (
     <DropdownButton id="language-dropdown-button" title="Languages">
