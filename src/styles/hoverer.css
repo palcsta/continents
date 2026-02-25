@@ -8,3 +8,28 @@
     stroke: cyan;
     cursor: pointer;
 }
+
+.map-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    pointer-events: none;
+    font-size: 0.9rem;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid cyan;
+    max-width: 250px;
+}
+
+.map-tooltip b {
+    color: cyan;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+
+.map-tooltip .tooltip-row {
+    margin: 2px 0;
+}

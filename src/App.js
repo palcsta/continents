@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons'
 import { Dropdown } from 'react-bootstrap';
 import Map3 from './components/Map3'
 import CountriesDropdown from './components/Dropdown'
+import TimezoneDropdown from './components/TimezoneDropdown'
 import BlocDropdown from './components/BlocDropdown'
 import ReligionDropdown from './components/ReligionDropdown'
 import LanguageDropdown from './components/LanguageDropdown'
@@ -193,6 +194,7 @@ function App() {
         gap: '5px',
         margin: '10px 0'
       }}>
+        <TimezoneDropdown countries={countries} selectMany={selectMany} selectOne={selectOne} />
         <Filter countries={countries} showDetail={showDetail} setShowDetail={setShowDetail} selected={selected} setSelected={setSelected} dkd={deselectKeepDetails} />
         <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user} />
         <BlocDropdown countries={countries} selectMany={selectMany} />
@@ -220,7 +222,7 @@ function App() {
 
 
       <CountryDetails countries={countries} religions={religions} showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} mode={mode} />
-      <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} />
+      <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} countries={countries} />
       <div className="mapButtonGroup">
         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
           <Button variant="warning" onClick={() => { setShowDetail(null); setSelected([]); setMapColor([]) }}><MdLayersClear />Clear map</Button>

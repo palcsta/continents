@@ -68,7 +68,7 @@ const SelectedFlags = (props) => {
               })
             )}>Name</Button>
           <span style={{ marginLeft: '10px' }}>Population of {"(" + countriesToShowFlagsFor.length + ") "}:
-            {numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b))}</span>
+            {numberChanger(countriesToShowFlagsFor.map(x => x.population).reduce((a, b) => a + b, 0))}</span>
         </ButtonGroup>
       </div> : ""}
 

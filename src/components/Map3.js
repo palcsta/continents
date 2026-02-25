@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../styles/hoverer.css'
 
 
@@ -6,42 +6,128 @@ const Map3 = (props) => {
   let svgRef = useRef(null);
   let mode = props.mode ? "black" : "white"
   
-  svgRef.current ? Array.from(svgRef.current.firstChild.children).forEach(c => {
-    c.onclick = (event) => { props.clickOne(c.id) }
-    let myColorObj = props.mapColor.find(e => e.id === c.id)
-    if (myColorObj) {
-      c.style.fill = myColorObj.color
-    } else if (c.getAttribute('data-type') === 'ocean' || c.getAttribute('data-type') === 'sea') {
-      c.style.fill = '#a0d8f1' // light blue for water
-    } else {
-      c.style.fill = mode
+  const [tooltip, setTooltip] = useState({ 
+    visible: false, 
+    content: null, 
+    x: 0, 
+    y: 0 
+  });
+
+  const calcLocalTime = (timezoneStr) => {
+    if (!timezoneStr) return "N/A";
+    
+    // REST Countries UTC offsets are strings like "UTC-05:00", "UTC+12:00", "UTC+05:30"
+    const match = timezoneStr.match(/UTC([+-]\d+)(:(\d+))?/);
+    if (!match) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const hoursOffset = parseInt(match[1], 10);
+    const minutesOffset = match[3] ? parseInt(match[3], 10) : 0;
+
+    const utcTime = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+    const offsetMs = (hoursOffset * 3600000) + (minutesOffset * 60000 * (hoursOffset < 0 ? -1 : 1));
+    const localTime = new Date(utcTime + offsetMs);
+
+    return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const handleMouseEnter = (event, id) => {
+    if (!props.countries) return;
+    
+    const country = props.countries.find(c => c.cca2.toLowerCase() === id.toLowerCase());
+    
+    if (country) {
+      const capital = country.capital ? country.capital[0] : "N/A";
+      const timezone = country.timezones ? country.timezones[0] : null;
+      const time = calcLocalTime(timezone);
+
+      setTooltip({
+        visible: true,
+        x: event.pageX,
+        y: event.pageY,
+        content: (
+          <>
+            <b>{country.name.common}</b>
+            <div className="tooltip-row">Capital: {capital}</div>
+            <div className="tooltip-row">Local Time: {time}</div>
+          </>
+        )
+      });
+    } else if (id.includes('ocean')) {
+      const name = id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      setTooltip({
+        visible: true,
+        x: event.pageX,
+        y: event.pageY,
+        content: (
+          <>
+            <b>{name}</b>
+            <div className="tooltip-row">Body of water</div>
+          </>
+        )
+      });
     }
-  }) : console.log("svgRef.current is null")
-  
-  useEffect(() => {
-    Array.from(svgRef.current.firstChild.children).forEach(c => {
-      c.onclick = (event) => { props.clickOne(c.id) }
-      let myColorObj = props.mapColor.find(e => e.id === c.id)
+  };
+
+  const handleMouseMove = (event) => {
+    setTooltip(prev => ({
+      ...prev,
+      x: event.pageX,
+      y: event.pageY
+    }));
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip(prev => ({ ...prev, visible: false }));
+  };
+
+  const updateElements = () => {
+    if (!svgRef.current) return;
+    
+    const elements = Array.from(svgRef.current.firstChild.children);
+    elements.forEach(c => {
+      c.onclick = (event) => { props.clickOne(c.id) };
+      c.onmouseenter = (event) => handleMouseEnter(event, c.id);
+      c.onmousemove = (event) => handleMouseMove(event);
+      c.onmouseleave = handleMouseLeave;
+
+      let myColorObj = props.mapColor.find(e => e.id === c.id);
       if (myColorObj) {
-        c.style.fill = myColorObj.color
-      } else if (c.getAttribute('data-type') === 'ocean' || c.getAttribute('data-type') === 'sea') {
-        c.style.fill = '#a0d8f1'
+        c.style.fill = myColorObj.color;
+      } else if (c.getAttribute('data-type') === 'ocean') {
+        c.style.fill = '#a0d8f1'; // light blue for water
       } else {
-        c.style.fill = mode
+        c.style.fill = mode;
       }
-    })
-  }, [props.mapColor])
+    });
+  };
+
+  useEffect(() => {
+    updateElements();
+  }, [props.mapColor, mode, props.countries]);
 
 
   return (
-    <svg
-      ref={svgRef}
-      viewBox="30.767 241.591 784.077 458.627"
-      xmlns="http://www.w3.org/2000/svg"
-      className="mapHover"
-    >
-      <g >
-        {/* Ocean and Sea Paths */}
+    <>
+      {tooltip.visible && (
+        <div 
+          className="map-tooltip" 
+          style={{ 
+            left: tooltip.x + 10, 
+            top: tooltip.y + 10,
+            position: 'absolute'
+          }}
+        >
+          {tooltip.content}
+        </div>
+      )}
+      <svg
+        ref={svgRef}
+        viewBox="30.767 241.591 784.077 458.627"
+        xmlns="http://www.w3.org/2000/svg"
+        className="mapHover"
+      >
+        <g >
+          {/* Ocean Paths */}
         <rect id="arctic-ocean" data-type="ocean" x="30.767" y="241.591" width="784.077" height="51" opacity="0.8">
           <title>Arctic Ocean</title>
         </rect>
@@ -59,24 +145,6 @@ const Map3 = (props) => {
         </rect>
         <rect id="indian-ocean" data-type="ocean" x="465" y="292.591" width="217" height="330.409" opacity="0.8">
           <title>Indian Ocean</title>
-        </rect>
-        <rect id="mediterranean-sea" data-type="sea" x="421" y="366" width="76" height="38" opacity="0.9">
-          <title>Mediterranean Sea</title>
-        </rect>
-        <rect id="caspian-sea" data-type="sea" x="525" y="361" width="14" height="28" opacity="0.9">
-          <title>Caspian Sea</title>
-        </rect>
-        <rect id="black-sea" data-type="sea" x="480" y="361" width="32" height="18" opacity="0.9">
-          <title>Black Sea</title>
-        </rect>
-        <rect id="red-sea" data-type="sea" x="491" y="404" width="24" height="46" opacity="0.9">
-          <title>Red Sea</title>
-        </rect>
-        <rect id="gulf-of-mexico" data-type="sea" x="209" y="404" width="36" height="30" opacity="0.9">
-          <title>Gulf of Mexico</title>
-        </rect>
-        <rect id="caribbean-sea" data-type="sea" x="230" y="424" width="61" height="33" opacity="0.9">
-          <title>Caribbean Sea</title>
         </rect>
         <path id="ae"
           d="M528.466,468.135l0.753,3.008l8.522,0.752l0.596-6.172l1.644-0.897l0.448-2.257l-2.688,0.753l-2.99,4.521L528.466,468.135L528.466,468.135z" />
@@ -727,6 +795,7 @@ const Map3 = (props) => {
       </g>
 
     </svg>
+    </>
   )
 }
 
