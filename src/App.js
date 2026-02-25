@@ -7,6 +7,7 @@ import Map3 from './components/Map3'
 import CountriesDropdown from './components/Dropdown'
 import BlocDropdown from './components/BlocDropdown'
 import ReligionDropdown from './components/ReligionDropdown'
+import LanguageDropdown from './components/LanguageDropdown'
 import CountryDetails from './components/CountryDetails'
 import Filter from './components/Filter'
 import { countriesService } from './services/countriesService'
@@ -187,12 +188,16 @@ function App() {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        align: 'center'
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        gap: '5px',
+        margin: '10px 0'
       }}>
         <Filter countries={countries} showDetail={showDetail} setShowDetail={setShowDetail} selected={selected} setSelected={setSelected} dkd={deselectKeepDetails} />
         <CountriesDropdown countries={countries} setShowDetail={setShowDetail} blocs={blocs} selectOne={selectOne} selectMany={selectMany} user={user} />
         <BlocDropdown countries={countries} selectMany={selectMany} />
         <ReligionDropdown countries={countries} religions={religions} selectMany={selectMany} selectOne={selectOne} />
+        <LanguageDropdown countries={countries} selectMany={selectMany} selectOne={selectOne} />
         <Button hidden variant="warning" onClick={() => setLoggingIn(!loggingIn)}>Login</Button>
         <Button variant={mode ? "dark" : "light"} onClick={() => changeMode()}>{mode ? "🌙" : "☀️"}</Button>
         <Button href={"https://palcsta.github.io"}>{"🏠"}</Button>

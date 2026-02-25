@@ -23,6 +23,38 @@ const blocGroups = [
       'GR', 'HU', 'IS', 'IT', 'LV', 'LT', 'LU', 'ME', 'NL', 'MK', 'NO',
       'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'TR', 'GB', 'US'
     ]
+  },
+  {
+    id: 'brics',
+    label: 'BRICS',
+    countries: ['BR', 'RU', 'IN', 'CN', 'ZA']
+  },
+  {
+    id: 'asean',
+    label: 'ASEAN',
+    countries: ['BN', 'KH', 'ID', 'LA', 'MY', 'MM', 'PH', 'SG', 'TH', 'VN']
+  },
+  {
+    id: 'mercosur',
+    label: 'MERCOSUR',
+    countries: ['AR', 'BR', 'PY', 'UY']
+  },
+  {
+    id: 'g7',
+    label: 'G7',
+    countries: ['CA', 'FR', 'DE', 'IT', 'JP', 'GB', 'US']
+  },
+  {
+    id: 'arab-league',
+    label: 'Arab League',
+    countries: ['DZ', 'BH', 'KM', 'DJ', 'EG', 'IQ', 'JO', 'KW', 'LB', 'LY', 'MR', 'MA', 'OM', 'PS', 'QA', 'SA', 'SO', 'SD', 'SY', 'TN', 'AE', 'YE']
+  },
+  {
+    id: 'african-union',
+    label: 'African Union',
+    countries: [
+      'DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CV', 'CM', 'CF', 'TD', 'KM', 'CG', 'CD', 'DJ', 'EG', 'GQ', 'ER', 'SZ', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'CI', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'MA', 'MZ', 'NA', 'NE', 'NG', 'RW', 'ST', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SS', 'SD', 'TZ', 'TG', 'TN', 'UG', 'ZM', 'ZW', 'EH'
+    ]
   }
 ]
 
