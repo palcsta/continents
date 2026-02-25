@@ -49,6 +49,13 @@ const CountryDetails = (props) => {
     margin: "5px"
   }
 
+  const coaStyle = {
+    width: "120px",
+    height: "120px",
+    objectFit: "contain",
+    margin: "5px"
+  }
+
   let country = props.countries.find(c => c.cca2.toLowerCase() === props.showDetail)
   let isSelected = props.selected.includes(props.showDetail)
   let rel = (country && props.religions) ? props.religions.filter(x => x.country === country.name.common) : []
@@ -140,7 +147,7 @@ const CountryDetails = (props) => {
 
         <div style={style}>
           {flagUrl && <img style={flagStyle} src={flagUrl} alt={`${country.name.common} flag`} />}
-          {coaUrl && <img style={flagStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
+          {coaUrl && <img style={coaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
           
           <div>
             <i><b>pop.</b></i>: {numberChanger(country.population)}
