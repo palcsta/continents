@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/continents/static/css/main.9996f0f6.css",
-    "main.js": "/continents/static/js/main.1a52f468.js",
+    "main.js": "/continents/static/js/main.4a1e5fc2.js",
     "static/media/ke.svg": "/continents/static/media/ke.e46c4856af97b1ffba7f.svg",
     "static/media/be.svg": "/continents/static/media/be.bd884fd68fd30c1cb1c6.svg",
     "static/media/rs.svg": "/continents/static/media/rs.62d7e40bc5e8673ad508.svg",
@@ -254,10 +254,10 @@
     "static/media/cg.svg": "/continents/static/media/cg.75cf3ccf4b3e044f6147.svg",
     "static/media/mf.svg": "/continents/static/media/mf.2b73cc5a99eb2870654b.svg",
     "main.9996f0f6.css.map": "/continents/static/css/main.9996f0f6.css.map",
-    "main.1a52f468.js.map": "/continents/static/js/main.1a52f468.js.map"
+    "main.4a1e5fc2.js.map": "/continents/static/js/main.4a1e5fc2.js.map"
   },
   "entrypoints": [
     "static/css/main.9996f0f6.css",
-    "static/js/main.1a52f468.js"
+    "static/js/main.4a1e5fc2.js"
   ]
 }
