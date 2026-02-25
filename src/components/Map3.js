@@ -30,6 +30,36 @@ const Map3 = (props) => {
     return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const getBestTimezone = (c) => {
+    if (!c.timezones || c.timezones.length === 0) return null;
+    if (c.timezones.length === 1) return c.timezones[0];
+    
+    if (c.capitalInfo && c.capitalInfo.latlng && c.capitalInfo.latlng.length > 1) {
+      const lon = c.capitalInfo.latlng[1];
+      const estimatedOffset = lon / 15;
+      
+      let bestTz = c.timezones[0];
+      let minDiff = Infinity;
+      
+      c.timezones.forEach(tz => {
+        const match = tz.match(/UTC([+-]\d+)(:(\d+))?/);
+        if (match) {
+          const hours = parseInt(match[1]);
+          const minutes = match[3] ? parseInt(match[3]) : 0;
+          const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1);
+          
+          const diff = Math.abs(estimatedOffset - offset);
+          if (diff < minDiff) {
+            minDiff = diff;
+            bestTz = tz;
+          }
+        }
+      });
+      return bestTz;
+    }
+    return c.timezones[0];
+  };
+
   const handleMouseEnter = (event, id) => {
     if (!props.countries) return;
     
@@ -37,7 +67,7 @@ const Map3 = (props) => {
     
     if (country) {
       const capital = country.capital ? country.capital[0] : "N/A";
-      const timezone = country.timezones ? country.timezones[0] : null;
+      const timezone = getBestTimezone(country);
       const time = calcLocalTime(timezone);
 
       setTooltip({

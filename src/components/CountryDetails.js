@@ -107,12 +107,43 @@ const CountryDetails = (props) => {
     )
   }
 
-  if (props.showDetail && country) {
+    if (props.showDetail && country) {
     const capital = country.capital ? country.capital[0] : "N/A"
     const languages = country.languages ? Object.values(country.languages) : []
     const subregion = country.subregion || "N/A"
-    const timezone = (country.timezones && country.timezones[0]) ? country.timezones[0] : ""
     
+    // Improved timezone selection logic
+    const getBestTimezone = (c) => {
+      if (!c.timezones || c.timezones.length === 0) return null;
+      if (c.timezones.length === 1) return c.timezones[0];
+      
+      if (c.capitalInfo && c.capitalInfo.latlng && c.capitalInfo.latlng.length > 1) {
+        const lon = c.capitalInfo.latlng[1];
+        const estimatedOffset = lon / 15;
+        
+        let bestTz = c.timezones[0];
+        let minDiff = Infinity;
+        
+        c.timezones.forEach(tz => {
+          const match = tz.match(/UTC([+-]\d+)(:(\d+))?/);
+          if (match) {
+            const hours = parseInt(match[1]);
+            const minutes = match[3] ? parseInt(match[3]) : 0;
+            const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1);
+            
+            const diff = Math.abs(estimatedOffset - offset);
+            if (diff < minDiff) {
+              minDiff = diff;
+              bestTz = tz;
+            }
+          }
+        });
+        return bestTz;
+      }
+      return c.timezones[0];
+    };
+
+    const timezone = getBestTimezone(country) || ""
     let offset = 0
     if (timezone.includes('UTC')) {
       const match = timezone.match(/UTC([+-]\d+)(:(\d+))?/)
