@@ -61,7 +61,6 @@ const Map3 = (props) => {
         content: (
           <>
             <b>{name}</b>
-            <div className="tooltip-row">Body of water</div>
           </>
         )
       });
