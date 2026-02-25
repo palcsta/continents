@@ -20,9 +20,6 @@ const CountriesDropdown = (props) => {
   
   const continents = props.countries.filter(x => x.region !== "Polar").map(x => x.region).filter(unique)
 
-  const polar = props.countries.filter(x => x.region === "Polar").map(x => x.name)
-  const other = props.countries.filter(x => x.region === "").map(x => x.name)
-
   return (
     <>
       {/*<div align="center" className="panel-footer " split="true" className="mapTopButton">*/}
@@ -87,47 +84,12 @@ const CountriesDropdown = (props) => {
               <Dropdown.Divider />
             </div>
           )}
-
-          <div align="center" className="panel-footer " split="true">
-
-            <DropdownButton variant="info" id="dropdown-basic-button" title="Other">
-              {other.map(x => <><Dropdown.Item key={x} onClick={() => {
-                let matchingOther = props.countries.filter(q => q.name === x)
-                //console.log("selecting one from other ",matchingOther)
-                let selection = getA2(matchingOther[0])
-                props.selectOne(selection)
-              }}>{x}</Dropdown.Item></>)}
-              {polar.map(x => <><Dropdown.Item key={x} onClick={() => {
-                let matchingOther = props.countries.filter(q => q.name === x)
-                //console.log("selecting one from polar ",matchingOther)
-                let selection = getA2(matchingOther[0])
-                props.selectOne(selection)
-              }}>{x + "(Polar)"}</Dropdown.Item></>)}
-            </DropdownButton>
-            <Dropdown.Divider />
-
-            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled" style={{ display: (props.user && props.blocs.length) ? "none" : "inline" }}>{props.user ? "You haven't saved any blocs yet." : "You must be logged in to do this."}</Tooltip>} placement="bottom">
-              <span>
-                <DropdownButton disabled={!props.user || !props.blocs.length} style={{ pointerEvents: !props.user || !props.blocs.length ? 'none' : 'auto' }} variant="info" id="dropdown-basic-button" title="User's blocs">
-                  {props.blocs.map(x => <><Dropdown.Item key={x.id} onClick={() => {
-                    let matchingBloc = x.data.countries
-                    //console.log("selecting ",matchingBloc)
-                    if (matchingBloc.length > 1) {
-                      props.selectMany(matchingBloc)
-                    } else {
-                      props.selectOne(matchingBloc[0])
-                    }
-                  }}>{x.data.name}</Dropdown.Item></>)}
-                </DropdownButton>
-              </span>
-            </OverlayTrigger>
-
-          </div>
         
         </DropdownButton>
 {/*      </div>*/}
 
     </>
   )
-  }
+}
+
 export default CountriesDropdown
