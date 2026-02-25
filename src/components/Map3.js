@@ -60,22 +60,22 @@ const Map3 = (props) => {
         <rect id="indian-ocean" data-type="ocean" x="465" y="292.591" width="217" height="330.409" opacity="0.8">
           <title>Indian Ocean</title>
         </rect>
-        <rect id="mediterranean-sea" data-type="sea" x="421" y="356" width="76" height="38" opacity="0.9">
+        <rect id="mediterranean-sea" data-type="sea" x="421" y="366" width="76" height="38" opacity="0.9">
           <title>Mediterranean Sea</title>
         </rect>
-        <rect id="caspian-sea" data-type="sea" x="525" y="351" width="14" height="28" opacity="0.9">
+        <rect id="caspian-sea" data-type="sea" x="525" y="361" width="14" height="28" opacity="0.9">
           <title>Caspian Sea</title>
         </rect>
-        <rect id="black-sea" data-type="sea" x="480" y="351" width="32" height="18" opacity="0.9">
+        <rect id="black-sea" data-type="sea" x="480" y="361" width="32" height="18" opacity="0.9">
           <title>Black Sea</title>
         </rect>
-        <rect id="red-sea" data-type="sea" x="491" y="394" width="24" height="46" opacity="0.9">
+        <rect id="red-sea" data-type="sea" x="491" y="404" width="24" height="46" opacity="0.9">
           <title>Red Sea</title>
         </rect>
-        <rect id="gulf-of-mexico" data-type="sea" x="209" y="394" width="36" height="30" opacity="0.9">
+        <rect id="gulf-of-mexico" data-type="sea" x="209" y="404" width="36" height="30" opacity="0.9">
           <title>Gulf of Mexico</title>
         </rect>
-        <rect id="caribbean-sea" data-type="sea" x="230" y="414" width="61" height="33" opacity="0.9">
+        <rect id="caribbean-sea" data-type="sea" x="230" y="424" width="61" height="33" opacity="0.9">
           <title>Caribbean Sea</title>
         </rect>
         <path id="ae"
