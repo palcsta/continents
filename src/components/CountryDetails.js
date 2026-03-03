@@ -43,9 +43,11 @@ const CountryDetails = (props) => {
   const flagStyle = {
     border: '2px solid black',
     "borderRadius": "5px",
-    width: "175px",
-    height: "120px",
-    objectFit: "cover",
+    maxWidth: "200px",
+    maxHeight: "125px",
+    width: "auto",
+    height: "auto",
+    objectFit: "contain",
     margin: "5px"
   }
 

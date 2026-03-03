@@ -19,6 +19,7 @@ div > p {
     width:3.5em;
     height:2.5em;
     vertical-align: middle;
+    object-fit: contain;
 }
 
 .selectedBox:hover {
