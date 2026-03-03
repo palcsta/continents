@@ -21,16 +21,16 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
 
   const christianSubgroups = [
     {
-      name: "Catholic",
-      countries: ["Vatican City", "Italy", "Spain", "France", "Poland", "Ireland", "Portugal", "Mexico", "Brazil", "Argentina", "Colombia", "Philippines"]
+      name: "Catholicism",
+      countries: ["Vatican City", "Italy", "Spain", "France", "Poland", "Ireland", "Portugal", "Mexico", "Brazil", "Argentina", "Colombia", "Philippines", "Austria", "Belgium", "Croatia", "Lithuania", "Slovakia", "Slovenia", "Luxembourg", "Monaco", "Malta", "San Marino", "Andorra", "Liechtenstein", "Peru", "Venezuela", "Chile", "Ecuador", "Guatemala", "Bolivia", "Cuba", "Dominican Republic", "Honduras", "Paraguay", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Uruguay"]
     },
     {
-      name: "Protestant",
-      countries: ["United Kingdom", "United States", "Germany", "Nigeria", "South Africa", "Sweden", "Norway", "Denmark", "Finland", "Iceland"]
+      name: "Protestantism",
+      countries: ["United Kingdom", "United States", "Germany", "Nigeria", "South Africa", "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Switzerland", "Netherlands", "Australia", "New Zealand", "Canada", "Kenya", "Ghana", "Uganda", "Malawi", "Zambia", "Zimbabwe", "Namibia", "Botswana", "Rwanda", "Burundi", "Bahamas", "Barbados", "Jamaica", "Guyana", "Suriname", "Papua New Guinea", "Fiji", "Samoa", "Tonga", "Vanuatu", "Solomon Islands"]
     },
     {
-      name: "Orthodox",
-      countries: ["Greece", "Russia", "Ukraine", "Romania", "Bulgaria", "Serbia", "Georgia", "Cyprus", "Ethiopia"]
+      name: "Orthodoxy",
+      countries: ["Greece", "Russia", "Ukraine", "Romania", "Bulgaria", "Serbia", "Georgia", "Cyprus", "Ethiopia", "Eritrea", "Belarus", "Moldova", "Montenegro", "North Macedonia", "Armenia"]
     }
   ]
 
@@ -61,6 +61,7 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
                   </Button>
                   <Dropdown.Toggle split="true" variant="success" id={`dropdown-${religion}`} />
                   <Dropdown.Menu className="super-colors">
+                    {religion === "Christianity" && <Dropdown.Header>Subgroups</Dropdown.Header>}
                     {religion === "Christianity" && christianSubgroups.map(sub => {
                       const subCountries = sub.countries
                         .map(name => {
@@ -72,7 +73,7 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
                       if (subCountries.length === 0) return null
 
                       return (
-                        <div key={sub.name} className=" " style={{ display: "inline block" }}>
+                        <div key={sub.name} style={{ display: "inline block" }}>
                           <Dropdown as={"ButtonGroup"}>
                             <div style={{ display: "flex", margin: "5%" }}>
                               <Button 
@@ -94,19 +95,24 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
                               </Dropdown.Menu>
                             </div>
                           </Dropdown>
-                          <Dropdown.Divider />
                         </div>
                       )
                     })}
                     {religion === "Christianity" && <Dropdown.Divider />}
-                    {matchingCountries.map(country => (
-                      <Dropdown.Item
-                        key={country.cca2}
-                        onClick={() => selectOne(country.cca2)}
-                      >
-                        {country.name}
-                      </Dropdown.Item>
-                    ))}
+                    {religion === "Christianity" && <Dropdown.Header>Other Christian Countries</Dropdown.Header>}
+                    {matchingCountries
+                      .filter(c => {
+                        if (religion !== "Christianity") return true
+                        return !christianSubgroups.some(sub => sub.countries.some(sc => sc.toLowerCase() === c.name.toLowerCase()))
+                      })
+                      .map(country => (
+                        <Dropdown.Item
+                          key={country.cca2}
+                          onClick={() => selectOne(country.cca2)}
+                        >
+                          {country.name}
+                        </Dropdown.Item>
+                      ))}
                   </Dropdown.Menu>
                 </div>
               </Dropdown>
