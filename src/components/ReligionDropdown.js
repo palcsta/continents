@@ -22,15 +22,15 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
   const christianSubgroups = [
     {
       name: "Catholicism",
-      countries: ["Vatican City", "Italy", "Spain", "France", "Poland", "Ireland", "Portugal", "Mexico", "Brazil", "Argentina", "Colombia", "Philippines", "Austria", "Belgium", "Croatia", "Lithuania", "Slovakia", "Slovenia", "Luxembourg", "Monaco", "Malta", "San Marino", "Andorra", "Liechtenstein", "Peru", "Venezuela", "Chile", "Ecuador", "Guatemala", "Bolivia", "Cuba", "Dominican Republic", "Honduras", "Paraguay", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Uruguay"]
+      countries: ["Vatican City", "Italy", "Spain", "France", "Poland", "Ireland", "Portugal", "Mexico", "Brazil", "Argentina", "Colombia", "Philippines", "Austria", "Belgium", "Croatia", "Lithuania", "Slovakia", "Slovenia", "Luxembourg", "Monaco", "Malta", "San Marino", "Andorra", "Liechtenstein", "Peru", "Venezuela", "Chile", "Ecuador", "Guatemala", "Bolivia", "Cuba", "Dominican Republic", "Honduras", "Paraguay", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Uruguay", "Hungary"]
     },
     {
       name: "Protestantism",
-      countries: ["United Kingdom", "United States", "Germany", "Nigeria", "South Africa", "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Switzerland", "Netherlands", "Australia", "New Zealand", "Canada", "Kenya", "Ghana", "Uganda", "Malawi", "Zambia", "Zimbabwe", "Namibia", "Botswana", "Rwanda", "Burundi", "Bahamas", "Barbados", "Jamaica", "Guyana", "Suriname", "Papua New Guinea", "Fiji", "Samoa", "Tonga", "Vanuatu", "Solomon Islands"]
+      countries: ["United Kingdom", "United States", "Germany", "Nigeria", "South Africa", "Sweden", "Norway", "Denmark", "Finland", "Iceland", "Switzerland", "Netherlands", "Australia", "New Zealand", "Canada", "Kenya", "Ghana", "Uganda", "Malawi", "Zambia", "Zimbabwe", "Namibia", "Botswana", "Rwanda", "Burundi", "Bahamas", "Barbados", "Jamaica", "Guyana", "Suriname", "Papua New Guinea", "Fiji", "Samoa", "Tonga", "Vanuatu", "Solomon Islands", "Latvia"]
     },
     {
       name: "Orthodoxy",
-      countries: ["Greece", "Russia", "Ukraine", "Romania", "Bulgaria", "Serbia", "Georgia", "Cyprus", "Ethiopia", "Eritrea", "Belarus", "Moldova", "Montenegro", "North Macedonia", "Armenia"]
+      countries: ["Greece", "Russia", "Ukraine", "Romania", "Bulgaria", "Serbia", "Georgia", "Cyprus", "Ethiopia", "Eritrea", "Belarus", "Moldova", "Montenegro", "North Macedonia", "Armenia", "Bosnia and Herzegovina"]
     }
   ]
 
