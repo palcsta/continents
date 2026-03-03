@@ -73,7 +73,7 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
                       if (subCountries.length === 0) return null
 
                       return (
-                        <div key={sub.name} style={{ display: "inline block" }}>
+                        <div key={sub.name} style={{ display: "inline-block" }}>
                           <Dropdown as={"ButtonGroup"}>
                             <div style={{ display: "flex", margin: "5%" }}>
                               <Button 
@@ -95,10 +95,10 @@ const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
                               </Dropdown.Menu>
                             </div>
                           </Dropdown>
+                          <Dropdown.Divider />
                         </div>
                       )
                     })}
-                    {religion === "Christianity" && <Dropdown.Divider />}
                     {religion === "Christianity" && <Dropdown.Header>Other Christian Countries</Dropdown.Header>}
                     {matchingCountries
                       .filter(c => {
