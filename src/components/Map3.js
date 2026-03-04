@@ -129,7 +129,7 @@ const Map3 = (props) => {
       }
 
       // Highlight border if this country is being shown in details
-      if (props.showDetail && c.id.toLowerCase() === props.showDetail.toLowerCase()) {
+      if (props.showDetail && c.id.toLowerCase() === props.showDetail.toLowerCase() && c.getAttribute('data-type') !== 'ocean') {
         c.style.stroke = "#FFD700"; // Gold color for highlight
         c.style.strokeWidth = "2";
         // Bring to front
