@@ -35,27 +35,32 @@ const CountryDetails = (props) => {
   const style = {
     display: 'flex',
     border: '3px solid ' + color,
-    align: "center",
-    "borderRadius": "10px",
-    color: textColor
+    alignItems: 'center',
+    borderRadius: '10px',
+    color: textColor,
+    padding: '10px',
+    marginBottom: '10px',
+    gap: '15px',
+    flexWrap: 'wrap'
   }
 
   const flagStyle = {
-    border: '2px solid black',
-    "borderRadius": "5px",
-    maxWidth: "200px",
-    maxHeight: "125px",
-    width: "auto",
-    height: "auto",
-    objectFit: "contain",
-    margin: "5px"
+    border: '2px solid ' + (props.mode ? '#333' : '#eee'),
+    borderRadius: '4px',
+    maxWidth: '220px',
+    maxHeight: '140px',
+    width: 'auto',
+    height: 'auto',
+    margin: '5px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   }
 
   const coaStyle = {
-    width: "120px",
-    height: "120px",
-    objectFit: "contain",
-    margin: "5px"
+    maxWidth: '120px',
+    maxHeight: '120px',
+    width: 'auto',
+    height: 'auto',
+    margin: '5px'
   }
 
   let country = props.countries.find(c => c.cca2.toLowerCase() === props.showDetail)
