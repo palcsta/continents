@@ -127,12 +127,23 @@ const Map3 = (props) => {
       } else {
         c.style.fill = mode;
       }
+
+      // Highlight border if this country is being shown in details
+      if (props.showDetail && c.id.toLowerCase() === props.showDetail.toLowerCase()) {
+        c.style.stroke = "#FFD700"; // Gold color for highlight
+        c.style.strokeWidth = "2";
+        // Bring to front
+        c.parentElement.appendChild(c);
+      } else {
+        c.style.stroke = "";
+        c.style.strokeWidth = "";
+      }
     });
   };
 
   useEffect(() => {
     updateElements();
-  }, [props.mapColor, mode, props.countries]);
+  }, [props.mapColor, mode, props.countries, props.showDetail]);
 
 
   return (

@@ -222,7 +222,7 @@ function App() {
 
 
       <CountryDetails countries={countries} religions={religions} showDetail={showDetail} mapColor={mapColor} selected={selected} selectOne={selectOne} dkd={deselectKeepDetails} mode={mode} />
-      <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} countries={countries} />
+      <Map3 mapColor={mapColor} mode={mode} clickOne={clickOne} countries={countries} showDetail={showDetail} />
       <div className="mapButtonGroup">
         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
           <Button variant="warning" onClick={() => { setShowDetail(null); setSelected([]); setMapColor([]) }}><MdLayersClear />Clear map</Button>
