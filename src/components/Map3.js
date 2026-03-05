@@ -145,6 +145,36 @@ const Map3 = (props) => {
     updateElements();
   }, [props.mapColor, mode, props.countries, props.showDetail]);
 
+  const getSunPosition = () => {
+    const now = new Date();
+    const dayOfYear = (Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - Date.UTC(now.getUTCFullYear(), 0, 0)) / 86400000;
+    
+    // Sun declination (Latitude)
+    const declination = 23.45 * Math.sin((2 * Math.PI / 365) * (dayOfYear - 81));
+    
+    // Equation of Time (EOT)
+    const b = (2 * Math.PI / 364) * (dayOfYear - 81);
+    const eot = 9.87 * Math.sin(2 * b) - 7.53 * Math.cos(b) - 1.5 * Math.sin(b);
+    
+    // UTC time in hours
+    const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+    
+    // Subsolar longitude
+    let lon = -15 * (utcHours - 12 + eot / 60);
+    // Normalize longitude to [-180, 180]
+    while (lon <= -180) lon += 360;
+    while (lon > 180) lon -= 360;
+    
+    return { lat: declination, lon: lon };
+  };
+
+  const sunPos = getSunPosition();
+  const latRad = sunPos.lat * Math.PI / 180;
+  const sunSvg = {
+    x: 422.8 + sunPos.lon * 2.178,
+    y: 513 - 141.2 * Math.log(Math.tan(Math.PI / 4 + latRad / 2))
+  };
+
 
   return (
     <>
@@ -166,7 +196,16 @@ const Map3 = (props) => {
         xmlns="http://www.w3.org/2000/svg"
         className="mapHover"
       >
+        <defs>
+          <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="rgba(255, 255, 0, 1)" />
+            <stop offset="30%" stopColor="rgba(255, 255, 0, 0.6)" />
+            <stop offset="70%" stopColor="rgba(255, 255, 0, 0.2)" />
+            <stop offset="100%" stopColor="rgba(255, 255, 0, 0)" />
+          </radialGradient>
+        </defs>
         <g >
+
           {/* Ocean Paths */}
         <rect id="arctic-ocean" data-type="ocean" x="30.767" y="241.591" width="784.077" height="51" opacity="0.8">
           <title>Arctic Ocean</title>
@@ -872,9 +911,16 @@ const Map3 = (props) => {
           d="M468.52,578.226l7.755,8.757l5.946,1.513l3.984-6.248l-0.312-8.281l-6.465-3.337l-2.431,1.098l-3.62,5.524l-5.014-0.053L468.52,578.226L468.52,578.226z" />
       </g>
 
+      {/* Sun representing the subsolar point */}
+      <g style={{ pointerEvents: 'none' }}>
+        <circle cx={sunSvg.x} cy={sunSvg.y} r="25" fill="url(#sunGlow)" opacity="0.8">
+          <animate attributeName="r" values="20;30;20" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx={sunSvg.x} cy={sunSvg.y} r="6" fill="#ffff00" stroke="#ffaa00" strokeWidth="1" />
+      </g>
+
     </svg>
     </>
-  )
-}
-
+    )
+    }
 export default Map3
