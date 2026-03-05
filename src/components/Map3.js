@@ -186,6 +186,44 @@ const Map3 = (props) => {
         <rect id="indian-ocean" data-type="ocean" x="465" y="292.591" width="217" height="330.409" opacity="0.8">
           <title>Indian Ocean</title>
         </rect>
+
+        {/* Compass */}
+        <g transform="translate(80, 620) scale(0.6)" style={{ pointerEvents: 'none' }}>
+          <circle cx="0" cy="0" r="45" fill="none" stroke={props.mode ? "#333" : "#eee"} strokeWidth="1" opacity="0.3" />
+          <circle cx="0" cy="0" r="40" fill="none" stroke={props.mode ? "#333" : "#eee"} strokeWidth="2" opacity="0.5" />
+          
+          {/* Main points (N, E, S, W) */}
+          <g fill={props.mode ? "#222" : "#fff"}>
+            <path d="M 0,-40 L 5,0 L 0,5 L -5,0 Z" fill="#e74c3c" /> {/* North (Red) */}
+            <path d="M 0,40 L 5,0 L 0,-5 L -5,0 Z" /> {/* South */}
+            <path d="M 40,0 L 0,5 L -5,0 L 0,-5 Z" /> {/* East */}
+            <path d="M -40,0 L 0,5 L 5,0 L 0,-5 Z" /> {/* West */}
+          </g>
+
+          {/* Sub points (NE, SE, SW, NW) */}
+          <g fill={props.mode ? "#666" : "#aaa"}>
+            <path d="M 28,-28 L 0,3 L -3,0 Z" />
+            <path d="M 28,28 L -3,0 L 0,-3 Z" />
+            <path d="M -28,28 L 0,-3 L 3,0 Z" />
+            <path d="M -28,-28 L 3,0 L 0,3 Z" />
+          </g>
+
+          {/* Labels */}
+          <g fontSize="12" fontWeight="bold" fontFamily="serif" textAnchor="middle" fill={props.mode ? "#000" : "#fff"}>
+            <text x="0" y="-45">N</text>
+            <text x="0" y="55">S</text>
+            <text x="50" y="5">E</text>
+            <text x="-50" y="5">W</text>
+            
+            <g fontSize="8" opacity="0.7">
+              <text x="32" y="-32">NE</text>
+              <text x="32" y="42">SE</text>
+              <text x="-32" y="42">SW</text>
+              <text x="-32" y="-32">NW</text>
+            </g>
+          </g>
+        </g>
+
         <path id="ae"
           d="M528.466,468.135l0.753,3.008l8.522,0.752l0.596-6.172l1.644-0.897l0.448-2.257l-2.688,0.753l-2.99,4.521L528.466,468.135L528.466,468.135z" />
         <path id="af"
