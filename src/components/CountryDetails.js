@@ -175,7 +175,7 @@ const CountryDetails = (props) => {
             </h2>
             <b>capital:</b> {capital}
           </div>
-          <Button style={{ margin: "1%" }} target="_blank" href={"https://yt-trends.iamrohit.in/" + country.name.common} variant={"danger"}>YouTube<br />trending</Button>
+          <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"}>YouTube<br />trending</Button>
           <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"}>find in <br />Google Maps</Button>
           <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
             onClick={() => { isSelected ? props.dkd(country.cca2.toLowerCase()) : props.selectOne(country.cca2.toLowerCase()) }}>
