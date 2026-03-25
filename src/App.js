@@ -65,10 +65,18 @@ function App() {
 
   useEffect(() => {
     const fetchCountries = async () => {
-      await countriesService().then(res => {
-        setCountries(res)
-        //console.log("countries in fetching app",countries)
-      })
+      try {
+        const res = await countriesService()
+        if (res && Array.isArray(res)) {
+          setCountries(res)
+        } else {
+          console.error("Fetched countries is not an array:", res)
+          setCountries([])
+        }
+      } catch (error) {
+        console.error("Error in fetchCountries:", error)
+        setCountries([])
+      }
     }
     fetchCountries()
   }, [])
@@ -173,7 +181,7 @@ function App() {
     }
   }
 
-  return (countries == undefined ? <div>Didn't fetch...<Button variant="success" href="/">Reload</Button></div> : (<div style={{ background: background }}>
+  return (!countries || countries.length === 0 ? <div>Didn't fetch...<Button variant="success" href="/">Reload</Button></div> : (<div style={{ background: background }}>
     <div className="container" style={{ border: "2px solid cyan", borderRadius: "5px" }}>
       {<div hidden={loggingIn}><LoginForm user={user} setUser={setUser} setBlocs={setBlocs} /></div>}
       <div style={{

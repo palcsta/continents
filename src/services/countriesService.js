@@ -5,16 +5,16 @@ const countriesUrl = 'https://restcountries.com/v3.1/all'
 export const countriesService = async () => {
   try {
     const response = await axios.get(countriesUrl)
-    console.log("countries response data= ",response.data)
+    console.log("Fetched countries from API")
     return response.data
   } catch (error) {
-    console.log(`error fetching countries from ${countriesUrl} ; ${error} ${error.response && error.response.data}`)
-    console.log("trying to fetch local json backup file")
+    console.log(`error fetching countries from ${countriesUrl}; trying local backup`)
     try {
+      // Import at top level or dynamic import if needed, but require works in CRA
       const jsonData = require('../data/all.json');
       return jsonData;
-    } catch (error) {
-      console.log(`error reading local json file ; ${error}`)
+    } catch (localError) {
+      console.error(`error reading local json file; ${localError}`)
       return []
     }
   }
