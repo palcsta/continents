@@ -11,11 +11,8 @@ export const countriesService = async () => {
     console.log(`error fetching countries from ${countriesUrl} ; ${error} ${error.response && error.response.data}`)
     console.log("trying to fetch local json backup file")
     try {
-      const jsonData = require('../all.json');
-      //console.log(JSON.parse(jsonData));
-      return ((jsonData));
-
-
+      const jsonData = require('../data/all.json');
+      return jsonData;
     } catch (error) {
       console.log(`error reading local json file ; ${error}`)
       return []

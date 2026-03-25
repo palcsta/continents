@@ -1,18 +1,6 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
-
-const numberChanger = (number) => {
-  if (number == null) return (<>-</>)
-  let filtered = number.toString()
-  if (filtered.length === 4) filtered = (filtered.substring(0, 1) + " " + filtered.substring(1))
-  else if (filtered.length === 5) filtered = (filtered.substring(0, 2) + " " + filtered.substring(2))
-  else if (filtered.length === 6) filtered = (filtered.substring(0, 3) + " " + filtered.substring(3))
-  else if (filtered.length === 7) filtered = (filtered.charAt(0) + " " + filtered.substring(1, 4) + " " + filtered.substring(4))
-  else if (filtered.length === 8) filtered = (filtered.substring(0, 2) + " " + filtered.substring(2, 5) + " " + filtered.substring(5))
-  else if (filtered.length === 9) filtered = (filtered.substring(0, 3) + " " + filtered.substring(3, 6) + " " + filtered.substring(6))
-  else if (filtered.length === 10) filtered = (filtered.substring(0, 1) + " " + filtered.substring(1, 4) + " " + filtered.substring(4, 7) + " " + filtered.substring(7))
-  return (<>{filtered}</>)
-}
+import { numberChanger } from '../utils/formatters'
 
 const toLeft = {
   "paddingLeft": "3em"

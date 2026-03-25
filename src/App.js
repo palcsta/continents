@@ -19,19 +19,9 @@ import LoginForm from './components/LoginForm'
 import SelectedFlags from './components/SelectedFlags'
 import SaveBloc from './components/SaveBloc'
 import Footer from './components/Footer'
-
-
+import { getNewColor } from './utils/formatters'
 
 import './styles/MapBottomButtons.css'
-import './styles/SaveBloc.css'
-
-
-const getNewColor = () => {
-  const R = Math.round(Math.random() * 255).toString(16).padStart(2, '0')
-  const G = Math.round(Math.random() * 255).toString(16).padStart(2, '0')
-  const B = Math.round(Math.random() * 255).toString(16).padStart(2, '0')
-  return `#${R}${G}${B}`
-}
 
 function App() {
   const [loggingIn, setLoggingIn] = useState(true)
