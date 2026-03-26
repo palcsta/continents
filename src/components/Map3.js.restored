@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
-import { useCountry } from "../context/CountryContext";
+import React, { useEffect, useRef, useState } from "react";
 import '../styles/hoverer.css'
 
 
-const Map3 = () => {
-  const { mapColor, mode: appMode, clickOne, countries, showDetail } = useCountry();
-  const svgRef = useRef(null);
-  const containerRef = useRef(null);
-  const mode = appMode ? "black" : "white"
+const Map3 = (props) => {
+  let svgRef = useRef(null);
+  let mode = props.mode ? "black" : "white"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
@@ -15,17 +12,6 @@ const Map3 = () => {
     x: 0, 
     y: 0 
   });
-
-  // Auto-scroll to center on mobile
-  useLayoutEffect(() => {
-    if (containerRef.current && window.innerWidth <= 768) {
-      const container = containerRef.current;
-      const scrollWidth = container.scrollWidth;
-      const clientWidth = container.clientWidth;
-      // Center the map (scroll to roughly 1/3 of the way in)
-      container.scrollLeft = (scrollWidth - clientWidth) / 2;
-    }
-  }, []);
 
   const calcLocalTime = (timezoneStr) => {
     if (!timezoneStr) return "N/A";
@@ -75,9 +61,9 @@ const Map3 = () => {
   };
 
   const handleMouseEnter = (event, id) => {
-    if (!countries) return;
+    if (!props.countries) return;
     
-    const country = countries.find(c => c.cca2.toLowerCase() === id.toLowerCase());
+    const country = props.countries.find(c => c.cca2.toLowerCase() === id.toLowerCase());
     
     if (country) {
       const capital = country.capital ? country.capital[0] : "N/A";
@@ -128,12 +114,12 @@ const Map3 = () => {
     
     const elements = Array.from(svgRef.current.firstChild.children);
     elements.forEach(c => {
-      c.onclick = (event) => { clickOne(c.id) };
+      c.onclick = (event) => { props.clickOne(c.id) };
       c.onmouseenter = (event) => handleMouseEnter(event, c.id);
       c.onmousemove = (event) => handleMouseMove(event);
       c.onmouseleave = handleMouseLeave;
 
-      let myColorObj = mapColor.find(e => e.id === c.id);
+      let myColorObj = props.mapColor.find(e => e.id === c.id);
       if (myColorObj) {
         c.style.fill = myColorObj.color;
       } else if (c.getAttribute('data-type') === 'ocean') {
@@ -143,7 +129,7 @@ const Map3 = () => {
       }
 
       // Highlight border if this country is being shown in details
-      if (showDetail && c.id.toLowerCase() === showDetail.toLowerCase() && c.getAttribute('data-type') !== 'ocean') {
+      if (props.showDetail && c.id.toLowerCase() === props.showDetail.toLowerCase() && c.getAttribute('data-type') !== 'ocean') {
         c.style.stroke = "#FFD700"; // Gold color for highlight
         c.style.strokeWidth = "2";
         // Bring to front
@@ -157,7 +143,7 @@ const Map3 = () => {
 
   useEffect(() => {
     updateElements();
-  }, [mapColor, mode, countries, showDetail]);
+  }, [props.mapColor, mode, props.countries, props.showDetail]);
 
 
   return (
@@ -174,7 +160,6 @@ const Map3 = () => {
           {tooltip.content}
         </div>
       )}
-      <div className="map-container" ref={containerRef}>
       <svg
         ref={svgRef}
         viewBox="30.767 241.591 784.077 458.627"
@@ -890,7 +875,6 @@ const Map3 = () => {
       </g>
 
     </svg>
-    </div>
     </>
     )
     }

@@ -1,24 +1,37 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 import { numberChanger } from '../utils/formatters'
+import { useCountry } from '../context/CountryContext'
 
 const toLeft = {
   "paddingLeft": "3em"
 }
 
-const CountryDetails = (props) => {
-  if (props.countries === undefined) return (<>NO DATA in CountryDetails</>)
+const CountryDetails = () => {
+  const { 
+    countries, 
+    religions, 
+    showDetail, 
+    mapColor, 
+    selected, 
+    selectOne, 
+    deselectOne: dkd,
+    mode,
+    setShowDetail
+  } = useCountry();
+
+  if (!countries) return <>NO DATA in CountryDetails</>
 
   let color = "blue"
-  if (props.showDetail) {
-    let foundColorObj = props.mapColor.find(e => e.id === props.showDetail)
+  if (showDetail) {
+    let foundColorObj = mapColor.find(e => e.id === showDetail)
     if (foundColorObj) {
       color = foundColorObj.color
     }
   }
 
-  const textColor = props.mode ? 'black' : '#f8f9fa'
-  const linkColor = props.mode ? '#007bff' : '#4dabff'
+  const textColor = mode ? 'black' : '#f8f9fa'
+  const linkColor = mode ? '#007bff' : '#4dabff'
 
   const style = {
     display: 'flex',
@@ -33,7 +46,7 @@ const CountryDetails = (props) => {
   }
 
   const flagStyle = {
-    border: '2px solid ' + (props.mode ? '#333' : '#eee'),
+    border: '2px solid ' + (mode ? '#333' : '#eee'),
     borderRadius: '4px',
     maxWidth: '220px',
     maxHeight: '140px',
@@ -51,15 +64,15 @@ const CountryDetails = (props) => {
     margin: '5px'
   }
 
-  let country = props.countries.find(c => c.cca2.toLowerCase() === props.showDetail)
-  let isSelected = props.selected.includes(props.showDetail)
-  let rel = (country && props.religions) ? props.religions.filter(x => x.country === country.name.common) : []
+  let country = countries.find(c => c.cca2.toLowerCase() === showDetail)
+  let isSelected = selected.includes(showDetail)
+  let rel = (country && religions) ? religions.filter(x => x.country === country.name.common) : []
   
   let currencyData = "no currency data"
   if (country && country.currencies) {
-    const currencies = Object.values(country.currencies)
-    if (currencies.length > 0) {
-      const first = currencies[0]
+    const currenciesValues = Object.values(country.currencies)
+    if (currenciesValues.length > 0) {
+      const first = currenciesValues[0]
       currencyData = `${first.name || first.code || ''} ${first.symbol ? '(' + first.symbol + ')' : ''}`
     }
   }
@@ -85,11 +98,11 @@ const CountryDetails = (props) => {
     }
   }
 
-  const isWater = props.showDetail && (props.showDetail.includes('ocean') || props.showDetail.includes('sea'))
+  const isWater = showDetail && (showDetail.includes('ocean') || showDetail.includes('sea'))
   
   if (isWater) {
-    const name = props.showDetail.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-    const type = props.showDetail.includes('ocean') ? 'Ocean' : 'Sea'
+    const name = showDetail.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    const type = showDetail.includes('ocean') ? 'Ocean' : 'Sea'
     return (
       <div style={style}>
         <div>
@@ -102,12 +115,11 @@ const CountryDetails = (props) => {
     )
   }
 
-    if (props.showDetail && country) {
+  if (showDetail && country) {
     const capital = country.capital ? country.capital[0] : "N/A"
     const languages = country.languages ? Object.values(country.languages) : []
     const subregion = country.subregion || "N/A"
     
-    // Improved timezone selection logic
     const getBestTimezone = (c) => {
       if (!c.timezones || c.timezones.length === 0) return null;
       if (c.timezones.length === 1) return c.timezones[0];
@@ -115,21 +127,18 @@ const CountryDetails = (props) => {
       if (c.capitalInfo && c.capitalInfo.latlng && c.capitalInfo.latlng.length > 1) {
         const lon = c.capitalInfo.latlng[1];
         const estimatedOffset = lon / 15;
-        
         let bestTz = c.timezones[0];
         let minDiff = Infinity;
-        
         c.timezones.forEach(tz => {
-          const match = tz.match(/UTC([+-]\d+)(:(\d+))?/);
+          const match = tz.match(/UTC([+-]\d+)(:(\d+))?/)
           if (match) {
-            const hours = parseInt(match[1]);
-            const minutes = match[3] ? parseInt(match[3]) : 0;
-            const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1);
-            
-            const diff = Math.abs(estimatedOffset - offset);
+            const hours = parseInt(match[1])
+            const minutes = match[3] ? parseInt(match[3]) : 0
+            const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1)
+            const diff = Math.abs(estimatedOffset - offset)
             if (diff < minDiff) {
-              minDiff = diff;
-              bestTz = tz;
+              minDiff = diff
+              bestTz = tz
             }
           }
         });
@@ -166,7 +175,7 @@ const CountryDetails = (props) => {
           <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"}>YouTube<br />trending</Button>
           <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"}>find in <br />Google Maps</Button>
           <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
-            onClick={() => { isSelected ? props.dkd(country.cca2.toLowerCase()) : props.selectOne(country.cca2.toLowerCase()) }}>
+            onClick={() => { isSelected ? dkd(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
             {isSelected ? <>Deselect<br />on map</> : <>Select<br />on map</>}
           </Button>
         </div>
@@ -200,7 +209,7 @@ const CountryDetails = (props) => {
               <br />
               <b><span style={toLeft}>Currency:</span></b> {currencyData}
               <br />
-              <button hidden onClick={() => props.setShowDetail(null)}>hide</button>
+              <button hidden onClick={() => setShowDetail(null)}>hide</button>
             </div>
           </div>
         </div>
