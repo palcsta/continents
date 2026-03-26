@@ -1,25 +1,25 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import { MdLayersClear } from 'react-icons/md';
-import { IconContext } from 'react-icons';
-import Map3 from './components/Map3';
-import CountriesDropdown from './components/Dropdown';
-import TimezoneDropdown from './components/TimezoneDropdown';
-import BlocDropdown from './components/BlocDropdown';
-import ReligionDropdown from './components/ReligionDropdown';
-import LanguageDropdown from './components/LanguageDropdown';
-import CountryDetails from './components/CountryDetails';
-import Filter from './components/Filter';
-import LoginForm from './components/LoginForm';
-import SelectedFlags from './components/SelectedFlags';
-import SaveBloc from './components/SaveBloc';
-import Footer from './components/Footer';
-import { CountryProvider, useCountry } from './context/CountryContext';
+import React from 'react'
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
+import { MdLayersClear } from 'react-icons/md'
+import { IconContext } from 'react-icons'
+import Map3 from './components/Map3'
+import CountriesDropdown from './components/Dropdown'
+import TimezoneDropdown from './components/TimezoneDropdown'
+import BlocDropdown from './components/BlocDropdown'
+import ReligionDropdown from './components/ReligionDropdown'
+import LanguageDropdown from './components/LanguageDropdown'
+import CountryDetails from './components/CountryDetails'
+import Filter from './components/Filter'
+import LoginForm from './components/LoginForm'
+import SelectedFlags from './components/SelectedFlags'
+import SaveBloc from './components/SaveBloc'
+import Footer from './components/Footer'
+import { useCountry } from './context/CountryContext'
 
 import './styles/MapBottomButtons.css';
 
-const AppContent = () => {
+const App = () => {
   const {
     loading,
     countries,
@@ -52,8 +52,8 @@ const AppContent = () => {
 
   if (!countries || countries.length === 0) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '20%' }}>
-        Didn't fetch any data...
+      <div style={{ textAlign: 'center', marginTop: '20%', background: background, height: '100vh' }}>
+        <p>Didn't fetch any data...</p>
         <Button variant="success" onClick={() => window.location.reload()}>Reload</Button>
       </div>
     );
@@ -113,13 +113,5 @@ const AppContent = () => {
     </div>
   );
 };
-
-function App() {
-  return (
-    <CountryProvider>
-      <AppContent />
-    </CountryProvider>
-  );
-}
 
 export default App;

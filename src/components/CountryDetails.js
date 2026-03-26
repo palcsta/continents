@@ -15,12 +15,12 @@ const CountryDetails = () => {
     mapColor, 
     selected, 
     selectOne, 
-    deselectOne: dkd,
+    deselectOne, 
     mode,
-    setShowDetail
+    setShowDetail 
   } = useCountry();
 
-  if (!countries) return <>NO DATA in CountryDetails</>
+  if (!countries) return (<>NO DATA in CountryDetails</>)
 
   let color = "blue"
   if (showDetail) {
@@ -70,9 +70,9 @@ const CountryDetails = () => {
   
   let currencyData = "no currency data"
   if (country && country.currencies) {
-    const currenciesValues = Object.values(country.currencies)
-    if (currenciesValues.length > 0) {
-      const first = currenciesValues[0]
+    const currencies = Object.values(country.currencies)
+    if (currencies.length > 0) {
+      const first = currencies[0]
       currencyData = `${first.name || first.code || ''} ${first.symbol ? '(' + first.symbol + ')' : ''}`
     }
   }
@@ -115,7 +115,7 @@ const CountryDetails = () => {
     )
   }
 
-  if (showDetail && country) {
+    if (showDetail && country) {
     const capital = country.capital ? country.capital[0] : "N/A"
     const languages = country.languages ? Object.values(country.languages) : []
     const subregion = country.subregion || "N/A"
@@ -127,18 +127,21 @@ const CountryDetails = () => {
       if (c.capitalInfo && c.capitalInfo.latlng && c.capitalInfo.latlng.length > 1) {
         const lon = c.capitalInfo.latlng[1];
         const estimatedOffset = lon / 15;
+        
         let bestTz = c.timezones[0];
         let minDiff = Infinity;
+        
         c.timezones.forEach(tz => {
-          const match = tz.match(/UTC([+-]\d+)(:(\d+))?/)
+          const match = tz.match(/UTC([+-]\d+)(:(\d+))?/);
           if (match) {
-            const hours = parseInt(match[1])
-            const minutes = match[3] ? parseInt(match[3]) : 0
-            const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1)
-            const diff = Math.abs(estimatedOffset - offset)
+            const hours = parseInt(match[1]);
+            const minutes = match[3] ? parseInt(match[3]) : 0;
+            const offset = hours + (minutes / 60) * (hours < 0 ? -1 : 1);
+            
+            const diff = Math.abs(estimatedOffset - offset);
             if (diff < minDiff) {
-              minDiff = diff
-              bestTz = tz
+              minDiff = diff;
+              bestTz = tz;
             }
           }
         });
@@ -175,7 +178,7 @@ const CountryDetails = () => {
           <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"}>YouTube<br />trending</Button>
           <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"}>find in <br />Google Maps</Button>
           <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
-            onClick={() => { isSelected ? dkd(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
+            onClick={() => { isSelected ? deselectOne(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
             {isSelected ? <>Deselect<br />on map</> : <>Select<br />on map</>}
           </Button>
         </div>

@@ -3,8 +3,11 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import '../styles/MapBottomButtons.css'
+import { useCountry } from '../context/CountryContext'
 
-const LanguageDropdown = ({ countries, selectMany, selectOne }) => {
+const LanguageDropdown = () => {
+  const { countries, selectMany, selectOne } = useCountry();
+  
   if (!countries || countries.length === 0) return null
 
   // Map to store language name -> { countries: [country objects], totalPopulation: number }

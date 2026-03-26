@@ -6,9 +6,10 @@ import { MdSave, MdLibraryAdd  } from 'react-icons/md'
 import { IconContext } from 'react-icons'
 import '../styles/SaveBloc.css'
 import { saveBlocService } from '../services/blocService'
+import { useCountry } from '../context/CountryContext'
 
-const SaveBlocForm = (props) => {
-
+const SaveBlocForm = () => {
+    const { selected, user, updateBlocList } = useCountry();
     const [blocName, setBlocName] = useState('')
     const [showSaveBlocForm, setShowSaveBlocForm] = useState(false)
     const [blocSaveProblem, setBlocSaveProblem] = useState("")
@@ -21,22 +22,20 @@ const SaveBlocForm = (props) => {
 
     const pressSave = (event) => {
         event.preventDefault()
-        const blocObject = {name:blocName,countries:props.selected}
-        const token = `bearer ${props.user.token}`
+        const blocObject = {name:blocName,countries:selected}
+        const token = `bearer ${user.token}`
         saveBlocService(blocObject,token).then(response => {
-            //console.log(response)
             let blocSavingProblem = "error" in response
             if(blocSavingProblem){
                 setBlocSaveProblem(response.error)
             } else if("info" in response){
-                //probably ok
                 setBlocSaveProblem("")
                 setBlocSaved(true)
                 setShowSaveBlocForm(false)
-                props.updateBlocList()
+                updateBlocList()
             }
         }).catch(error => {
-            //console.log(error.response)
+            console.error(error)
         })
     }
 
@@ -53,11 +52,11 @@ const SaveBlocForm = (props) => {
     return (
         <>
             {
-                !showSaveBlocForm||!props.user?<>
+                !showSaveBlocForm||!user?<>
                     <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
-                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled" style={{display:props.user?"none":"inline"}}>You must be logged in to do this.</Tooltip>}>
+                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled" style={{display:user?"none":"inline"}}>You must be logged in to do this.</Tooltip>}>
 <span>
-                            <Button disabled={!props.user} style={{ pointerEvents: !props.user?'none':'auto' }} onClick={()=>firstPress()}><MdLibraryAdd/>New Bloc</Button> 
+                            <Button disabled={!user} style={{ pointerEvents: !user?'none':'auto' }} onClick={()=>firstPress()}><MdLibraryAdd/>New Bloc</Button> 
 </span>
                             </OverlayTrigger>
                     </IconContext.Provider>
@@ -77,8 +76,6 @@ const SaveBlocForm = (props) => {
             }
         </>
     )
-
 }
-
 
 export default SaveBlocForm

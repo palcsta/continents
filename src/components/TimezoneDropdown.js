@@ -3,8 +3,10 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import '../styles/MapBottomButtons.css'
+import { useCountry } from '../context/CountryContext'
 
-const TimezoneDropdown = ({ countries, selectMany, selectOne }) => {
+const TimezoneDropdown = () => {
+  const { countries, selectMany, selectOne } = useCountry()
   if (!countries || countries.length === 0) return null
 
   // Map to store timezone -> list of country objects

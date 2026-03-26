@@ -1,57 +1,49 @@
 import '../styles/MapBottomButtons.css'
-import { render } from '@testing-library/react';
 import React, { useState } from 'react';
+import { useCountry } from '../context/CountryContext';
 
-const Filter = (props) => {
-
+const Filter = () => {
+  const { countries, setShowDetail } = useCountry();
   const [searchBoxContent, setSearchBoxContent] = useState("")
-  const [searchHints,setSearchHints] = useState("")
+  const [searchHints, setSearchHints] = useState("")
  
   const handleNewSearchBoxContent = (event) => {
-    // console.log("event ", event)
+    const value = event.target.value;
+    setSearchBoxContent(value);
 
-    let filtered = props.countries.filter(
-      x =>
-/*		  x.name.common.toLowerCase()===
-          event.target.value.toLowerCase()
-          ||*/ (x.name.common.toLowerCase().includes(
-          event.target.value.toLowerCase()) || (x.name.common.toLowerCase()==event.target.value.toLowerCase()))
-          )
-    event.preventDefault()
-//    console.log("event trgt vlue",event.traget.value)
-    setSearchBoxContent(event.target.value)
-    //console.log("FILTERED: ", filtered)
-    if (filtered) {
-      //console.log("filtered", filtered.length)
-      if (filtered.length === 1) {
-        //console.log("searchbox wants to show details for ", filtered[0].cca2.toLowerCase()) //alpha to lower
-        props.setShowDetail(filtered[0].cca2.toLowerCase())
-      }
-      if (filtered.length < 21 && filtered.length !== 1) {
-      	if(filtered.map(x => x.name.common.toLowerCase()).includes(
-      	event.target.value.toLowerCase())){
-		let alpha = 
-		filtered.filter(x => x.name.common.toLowerCase()==
-      	event.target.value.toLowerCase())[0].cca2
-	//console.log(alpha)
-     	props.setShowDetail(alpha.toLowerCase())
-      	}
-        setSearchHints(filtered.map(x => x.name.common).join(", "))
-      } else {
-        setSearchHints("")
-      }
+    if (!value) {
+      setShowDetail(null);
+      setSearchHints("");
+      return;
     }
-    !event.target.value && props.setShowDetail(null)
+
+    const filtered = countries.filter(x => 
+      x.name.common.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (filtered.length === 1) {
+      setShowDetail(filtered[0].cca2.toLowerCase());
+    } else if (filtered.length > 1 && filtered.length < 21) {
+      const exactMatch = filtered.find(x => x.name.common.toLowerCase() === value.toLowerCase());
+      if (exactMatch) {
+        setShowDetail(exactMatch.cca2.toLowerCase());
+      }
+      setSearchHints(filtered.map(x => x.name.common).join(", "));
+    } else {
+      setSearchHints("");
+    }
   }
 
   return (
     <>
-      {/*<div style={{ "textAlign": "center" }} className="mapTopButton">*/}
-        <input placeholder="Search for a country" value={searchBoxContent}
-          onChange={handleNewSearchBoxContent} />
-        {searchHints && <span>Did you mean: </span>}{searchHints}
-      {/*</div>*/}
+      <input 
+        placeholder="Search for a country" 
+        value={searchBoxContent}
+        onChange={handleNewSearchBoxContent} 
+      />
+      {searchHints && <span>Did you mean: </span>}{searchHints}
     </>
   )
 }
+
 export default Filter

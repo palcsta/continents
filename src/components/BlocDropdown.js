@@ -4,6 +4,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 
 import '../styles/MapBottomButtons.css'
+import { useCountry } from '../context/CountryContext'
 
 const blocGroups = [
   {
@@ -58,7 +59,8 @@ const blocGroups = [
   }
 ]
 
-const BlocDropdown = ({ countries, selectMany }) => {
+const BlocDropdown = () => {
+  const { countries, selectMany } = useCountry()
   const countryLookup = new Set(countries.map(country => country.cca2.toLowerCase()))
 
   const toSelectableList = (codes) => (

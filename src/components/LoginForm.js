@@ -1,17 +1,19 @@
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md'
 import { IconContext } from 'react-icons'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
-import { Container, Row, Col } from 'react-bootstrap'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 
 import '../styles/login.css'
 import { loginService, registerService } from '../services/loginService'
 import { getBlocsService } from '../services/blocService'
+import { useCountry } from '../context/CountryContext'
 
-
-const LoginForm = (props) => {
+const LoginForm = () => {
+  const { user, setUser, updateBlocList } = useCountry();
   const [validated, setValidated] = useState(false);
 
   const [username, setUsername] = useState('')
@@ -20,89 +22,69 @@ const LoginForm = (props) => {
   const [regPassConfirm, setRegPassConfirm] = useState('')
   const [usernameErrors, setUsernameErrors] = useState([])
   const [passwordErrors, setPasswordErrors] = useState([])
-
   const [loginProblems, setLoginProblems] = useState([])
 
   useEffect(() => {
     const userJSON = window.localStorage.getItem('loggedContinentsUser')
     if (userJSON) {
       const loggedInUser = JSON.parse(userJSON)
-      props.setUser(loggedInUser)
-      const fetchBlocs = async () => {
-        await getBlocsService(`bearer ${loggedInUser.token}`).then(res => {
-          //console.log("got blocs: ",res)
-          props.setBlocs(res)
-        })
-      }
-      fetchBlocs()
+      setUser(loggedInUser)
+      updateBlocList()
     }
-  }, [])
+  }, [setUser, updateBlocList])
 
   const login = async () => {
     setValidated(false)
     const loginObject = {"username":username,"password":password}
-    await loginService(loginObject).then(res => { 
+    try {
+      const res = await loginService(loginObject)
       const objWithToken = res.find(o=>"token" in o)
       if(objWithToken){
-        props.setUser({token:objWithToken.token,username:username})
-        window.localStorage.setItem('loggedContinentsUser', JSON.stringify({token:objWithToken.token,username:username})) 
-        const fetchBlocs = async () => {
-          await getBlocsService(`bearer ${objWithToken.token}`).then(bres => {
-            //console.log("got blocs because user pressed login: ",res)
-            props.setBlocs(bres)
-          })
-        }
-        fetchBlocs()
-      }else{
-        props.setUser(null)
+        const newUser = {token:objWithToken.token,username:username}
+        setUser(newUser)
+        window.localStorage.setItem('loggedContinentsUser', JSON.stringify(newUser)) 
+        updateBlocList()
+      } else {
+        setUser(null)
       }
-      let hasProblem = Array.isArray(res) && res.some(o => o.error)
+      
       let weCanReg = res.find(o => "canReg" in o) && res.find(o => "canReg" in o).canReg
       setUsernameErrors(res.filter(o=>o.concerning==="username").map(o=>o.error))
       setPasswordErrors(res.filter(o=>o.concerning==="password").map(o=>o.error))
       setLoginProblems(res.filter(o=>o.concerning==="login"))
       setShowReg(weCanReg)
-      setValidated(!weCanReg && !res.filter(o=>o.concerning==="login"))
-    })
+      setValidated(!weCanReg && !res.filter(o=>o.concerning==="login").length)
+    } catch (error) {
+      console.error(error)
+    }
   }
-  
 
   const register = async () => {
-    //console.log("tried to register with the new form")
     if(regPassConfirm === password){
       const regObject= {"username":username,"password":password}
       const dataResponse = await registerService(regObject)
-      //console.log("data response from register is array: ",Array.isArray(dataResponse))
       let regHasProblems = dataResponse.find(o=>"error" in o)
-      //console.log("register response: ",dataResponse)
       if(!regHasProblems){
-        //console.log(`register response: ${response.data} `)
         setShowReg(false)
       } else {
         const usernameProblems = dataResponse.filter(o=>o.concerning==="username")
         const passwordProblems = dataResponse.filter(o=>o.concerning==="password")
-        //console.log(`reg had ${usernameProblems.length} problems with username and ${passwordProblems.length} with password`)
         setPasswordErrors(passwordProblems)
         setUsernameErrors(usernameProblems)
       }
     }
-    //else{
-      //console.log("passwords didnt match")
-      //props.setNotifMessage({error:"The passwords did not match"})
-   // }
   }
 
   const pressLogin = (event) => {
     event.preventDefault()
-    showReg?register():login()
+    showReg ? register() : login()
   }
 
   const pressLogout = () => {
     window.localStorage.removeItem('loggedContinentsUser')
-    props.setUser(null)
+    setUser(null)
     setUsername('')
     setPassword('')
-    props.setBlocs([])
   }
 
   const handleLoginFormUserChange = (event) => {
@@ -111,96 +93,88 @@ const LoginForm = (props) => {
     setUsername(event.target.value)
   }
 
-  const handleLoginFormPassChange = (event) => {
-    setPassword(event.target.value)
-  }
-
-  const handleRegPassConfirmChange = (event) => {
-    setRegPassConfirm(event.target.value)
-  }
-
-
   const loggedOutContent = (
-
     <IconContext.Provider value={{ size: "1.25em"}}>
-    <Form noValidate onSubmit={(event)=>pressLogin(event)}>
-      <Form.Row>
-        <Form.Group as={Col} md="3" controlId="validationCustomUsername">
-          <InputGroup hasValidation>
-            <InputGroup.Prepend>
+      <Form noValidate onSubmit={(event)=>pressLogin(event)}>
+        <Row>
+          <Form.Group as={Col} md="3" controlId="validationCustomUsername">
+            <InputGroup hasValidation>
               <InputGroup.Text id="inputGroupPrepend"><MdAccountCircle/></InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              placeholder="Username"
-              onChange={handleLoginFormUserChange} 
-              isValid={username.length>0 && validated && !usernameErrors.length}
-              isInvalid={usernameErrors.length}
-            />
-            <Form.Control.Feedback type="invalid">
-              {usernameErrors.map(o=>o.error).join(", ")}
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustomPassword">
-          <InputGroup hasValidation validated={validated}>
-            <InputGroup.Prepend>
+              <Form.Control
+                type="text"
+                placeholder="Username"
+                onChange={handleLoginFormUserChange} 
+                isValid={username.length > 0 && validated && !usernameErrors.length}
+                isInvalid={usernameErrors.length > 0}
+              />
+              <Form.Control.Feedback type="invalid">
+                {usernameErrors.join(", ")}
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+          <Form.Group as={Col} md="3" controlId="validationCustomPassword">
+            <InputGroup hasValidation>
               <InputGroup.Text id="passwordInputGroupPrepend"><MdVpnKey/></InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={handleLoginFormPassChange}
-              isValid={password.length && validated && !passwordErrors.length}
-              isInvalid={passwordErrors.length}
-            />
-            <Form.Control.Feedback type="invalid">
-              {passwordErrors.map(o=>o.error).join(", ")}
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustomPasswordConfirm" style={{display:showReg?"inline":"none"}}>
-          <InputGroup hasValidation>
-            <InputGroup.Prepend>
-              <InputGroup.Text id="passwordConfirmInputGroupPrepend"><MdVpnKey/></InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="password"
-              placeholder="Confirm password"
-              onChange={handleRegPassConfirmChange}
-              isValid={password===regPassConfirm}
-              isInvalid={password!==regPassConfirm}
-            />
-            <Form.Control.Feedback type="invalid">
-            Passwords must match.
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                isValid={password.length > 0 && validated && !passwordErrors.length}
+                isInvalid={passwordErrors.length > 0}
+              />
+              <Form.Control.Feedback type="invalid">
+                {passwordErrors.join(", ")}
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+          {showReg && (
+            <Form.Group as={Col} md="3" controlId="validationCustomPasswordConfirm">
+              <InputGroup hasValidation>
+                <InputGroup.Text id="passwordConfirmInputGroupPrepend"><MdVpnKey/></InputGroup.Text>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm password"
+                  onChange={(e) => setRegPassConfirm(e.target.value)}
+                  isValid={password === regPassConfirm}
+                  isInvalid={password !== regPassConfirm}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Passwords must match.
+                </Form.Control.Feedback>
+              </InputGroup>
+            </Form.Group>
+          )}
 
-        <Form.Group as={Col} md={showReg?"1":"2"}>
-          <Button variant={showReg?"outline-primary":"link"} type="submit" >{showReg?"Register":"Login/ Register"}</Button>
-          <Form.Label style={{color:"red"}}>{loginProblems.length?loginProblems.map(o=>o.error).join(", "):""}</Form.Label>
-        </Form.Group>
-        <Form.Group as={Col} md="1">
-          <Button variant="outline-secondary" onClick={()=>setShowReg(false)} style={{display:showReg?"inline":"none"}}>Cancel</Button>
-        </Form.Group>
-      </Form.Row>
-    </Form>
-      </IconContext.Provider> 
+          <Form.Group as={Col} md={showReg ? "1" : "2"}>
+            <Button variant={showReg ? "outline-primary" : "link"} type="submit">
+              {showReg ? "Register" : "Login/ Register"}
+            </Button>
+            <Form.Label style={{color:"red"}}>
+              {loginProblems.length ? loginProblems.map(o=>o.error).join(", ") : ""}
+            </Form.Label>
+          </Form.Group>
+          {showReg && (
+            <Form.Group as={Col} md="1">
+              <Button variant="outline-secondary" onClick={()=>setShowReg(false)}>Cancel</Button>
+            </Form.Group>
+          )}
+        </Row>
+      </Form>
+    </IconContext.Provider> 
   )
 
   const loggedInContent = (
     <div>
-      <form onSubmit={pressLogout}>
-        <span>Logged in as {props.user?props.user.username:""}</span>
-        <button type="submit" className="fauxlinkbutton">Logout</button>
-      </form>
+      <div onClick={pressLogout} style={{ cursor: 'pointer' }}>
+        <span>Logged in as {user ? user.username : ""}</span>
+        <span className="fauxlinkbutton" style={{ marginLeft: '10px' }}>Logout</span>
+      </div>
     </div>
   )
 
   return (
     <>
-      {props.user?loggedInContent:loggedOutContent}
+      {user ? loggedInContent : loggedOutContent}
     </>
   )
 }

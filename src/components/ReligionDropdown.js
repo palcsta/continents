@@ -3,8 +3,11 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import '../styles/MapBottomButtons.css'
+import { useCountry } from '../context/CountryContext'
 
-const ReligionDropdown = ({ countries, religions, selectMany, selectOne }) => {
+const ReligionDropdown = () => {
+  const { countries, religions, selectMany, selectOne } = useCountry();
+  
   if (!religions || religions.length === 0) return null
 
   const uniqueReligions = [...new Set(religions.map(r => r.religion))].filter(Boolean).sort()

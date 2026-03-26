@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
-import { useCountry } from "../context/CountryContext";
+import React, { useEffect, useRef, useState } from "react";
 import '../styles/hoverer.css'
+import { useCountry } from "../context/CountryContext";
 
 
 const Map3 = () => {
-  const { mapColor, mode: appMode, clickOne, countries, showDetail } = useCountry();
-  const svgRef = useRef(null);
-  const containerRef = useRef(null);
-  const mode = appMode ? "black" : "white"
+  const { countries, mapColor, showDetail, clickOne, mode: appMode } = useCountry();
+  let svgRef = useRef(null);
+  let mode = appMode ? "black" : "white"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
@@ -15,17 +14,6 @@ const Map3 = () => {
     x: 0, 
     y: 0 
   });
-
-  // Auto-scroll to center on mobile
-  useLayoutEffect(() => {
-    if (containerRef.current && window.innerWidth <= 768) {
-      const container = containerRef.current;
-      const scrollWidth = container.scrollWidth;
-      const clientWidth = container.clientWidth;
-      // Center the map (scroll to roughly 1/3 of the way in)
-      container.scrollLeft = (scrollWidth - clientWidth) / 2;
-    }
-  }, []);
 
   const calcLocalTime = (timezoneStr) => {
     if (!timezoneStr) return "N/A";
@@ -174,7 +162,6 @@ const Map3 = () => {
           {tooltip.content}
         </div>
       )}
-      <div className="map-container" ref={containerRef}>
       <svg
         ref={svgRef}
         viewBox="30.767 241.591 784.077 458.627"
@@ -890,7 +877,6 @@ const Map3 = () => {
       </g>
 
     </svg>
-    </div>
     </>
     )
     }
