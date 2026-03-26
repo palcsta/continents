@@ -147,7 +147,7 @@ export const CountryProvider = ({ children }) => {
   return (
     <CountryContext.Provider value={value}>
       {children}
-    </CountryProvider>
+    </CountryContext.Provider>
   );
 };
 
