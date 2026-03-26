@@ -28,6 +28,8 @@ const AppContent = () => {
     loggingIn,
     setLoggingIn,
     changeMode,
+    toggleMobileView,
+    mobileView,
     clearMap
   } = useCountry();
 

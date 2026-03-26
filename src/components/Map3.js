@@ -206,11 +206,11 @@ const Map3 = () => {
 
         {/* Compass */}
         <g transform="translate(80, 620) scale(0.6)" style={{ pointerEvents: 'none' }}>
-          <circle cx="0" cy="0" r="45" fill="none" stroke={props.mode ? "#333" : "#eee"} strokeWidth="1" opacity="0.3" />
-          <circle cx="0" cy="0" r="40" fill="none" stroke={props.mode ? "#333" : "#eee"} strokeWidth="2" opacity="0.5" />
+          <circle cx="0" cy="0" r="45" fill="none" stroke={appMode ? "#333" : "#eee"} strokeWidth="1" opacity="0.3" />
+          <circle cx="0" cy="0" r="40" fill="none" stroke={appMode ? "#333" : "#eee"} strokeWidth="2" opacity="0.5" />
           
           {/* Main points (N, E, S, W) */}
-          <g fill={props.mode ? "#222" : "#fff"}>
+          <g fill={appMode ? "#222" : "#fff"}>
             <path d="M 0,-40 L 5,0 L 0,5 L -5,0 Z" fill="#e74c3c" /> {/* North (Red) */}
             <path d="M 0,40 L 5,0 L 0,-5 L -5,0 Z" /> {/* South */}
             <path d="M 40,0 L 0,5 L -5,0 L 0,-5 Z" /> {/* East */}
@@ -218,7 +218,7 @@ const Map3 = () => {
           </g>
 
           {/* Sub points (NE, SE, SW, NW) */}
-          <g fill={props.mode ? "#666" : "#aaa"}>
+          <g fill={appMode ? "#666" : "#aaa"}>
             <path d="M 28,-28 L 0,3 L -3,0 Z" />
             <path d="M 28,28 L -3,0 L 0,-3 Z" />
             <path d="M -28,28 L 0,-3 L 3,0 Z" />
@@ -226,7 +226,7 @@ const Map3 = () => {
           </g>
 
           {/* Labels */}
-          <g fontSize="12" fontWeight="bold" fontFamily="serif" textAnchor="middle" fill={props.mode ? "#000" : "#fff"}>
+          <g fontSize="12" fontWeight="bold" fontFamily="serif" textAnchor="middle" fill={appMode ? "#000" : "#fff"}>
             <text x="0" y="-45">N</text>
             <text x="0" y="55">S</text>
             <text x="50" y="5">E</text>
