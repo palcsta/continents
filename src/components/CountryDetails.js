@@ -17,6 +17,7 @@ const CountryDetails = () => {
     selectOne, 
     deselectOne, 
     mode,
+    mobileView,
     setShowDetail 
   } = useCountry();
 
@@ -35,8 +36,9 @@ const CountryDetails = () => {
 
   const style = {
     display: 'flex',
+    flexDirection: mobileView ? 'column' : 'row',
     border: '3px solid ' + color,
-    alignItems: 'center',
+    alignItems: mobileView ? 'flex-start' : 'center',
     borderRadius: '10px',
     color: textColor,
     padding: '10px',
@@ -48,8 +50,8 @@ const CountryDetails = () => {
   const flagStyle = {
     border: '2px solid ' + (mode ? '#333' : '#eee'),
     borderRadius: '4px',
-    maxWidth: '220px',
-    maxHeight: '140px',
+    maxWidth: mobileView ? '150px' : '220px',
+    maxHeight: mobileView ? '100px' : '140px',
     width: 'auto',
     height: 'auto',
     margin: '5px',
@@ -57,8 +59,8 @@ const CountryDetails = () => {
   }
 
   const coaStyle = {
-    maxWidth: '120px',
-    maxHeight: '120px',
+    maxWidth: mobileView ? '80px' : '120px',
+    maxHeight: mobileView ? '80px' : '120px',
     width: 'auto',
     height: 'auto',
     margin: '5px'
@@ -175,9 +177,9 @@ const CountryDetails = () => {
             </h2>
             <b>capital:</b> {capital}
           </div>
-          <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"}>YouTube<br />trending</Button>
-          <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"}>find in <br />Google Maps</Button>
-          <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"}
+          <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"} size={mobileView ? "sm" : undefined}>YouTube<br />trending</Button>
+          <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"} size={mobileView ? "sm" : undefined}>find in <br />Google Maps</Button>
+          <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"} size={mobileView ? "sm" : undefined}
             onClick={() => { isSelected ? deselectOne(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
             {isSelected ? <>Deselect<br />on map</> : <>Select<br />on map</>}
           </Button>

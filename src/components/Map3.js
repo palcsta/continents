@@ -4,7 +4,7 @@ import { useCountry } from "../context/CountryContext";
 
 
 const Map3 = () => {
-  const { countries, mapColor, showDetail, clickOne, mode: appMode } = useCountry();
+  const { countries, mapColor, showDetail, clickOne, mode: appMode, mobileView } = useCountry();
   let svgRef = useRef(null);
   let mode = appMode ? "black" : "white"
   
@@ -143,13 +143,30 @@ const Map3 = () => {
     });
   };
 
+  const wrapperRef = useRef(null);
+
   useEffect(() => {
     updateElements();
   }, [mapColor, mode, countries, showDetail]);
 
+  useEffect(() => {
+    if (mobileView && wrapperRef.current) {
+      const wrapper = wrapperRef.current;
+      wrapper.scrollLeft = (wrapper.scrollWidth - wrapper.clientWidth) / 2;
+    }
+  }, [mobileView]);
 
   return (
-    <>
+    <div 
+      ref={wrapperRef}
+      style={{ 
+        overflowX: mobileView ? 'auto' : 'hidden', 
+        overflowY: 'hidden',
+        width: '100%',
+        WebkitOverflowScrolling: 'touch',
+        marginBottom: '10px'
+      }}
+    >
       {tooltip.visible && (
         <div 
           className="map-tooltip" 
@@ -167,6 +184,11 @@ const Map3 = () => {
         viewBox="30.767 241.591 784.077 458.627"
         xmlns="http://www.w3.org/2000/svg"
         className="mapHover"
+        style={{ 
+          minWidth: mobileView ? '800px' : '100%',
+          height: 'auto',
+          display: 'block'
+        }}
       >
         <g >
 
@@ -877,7 +899,7 @@ const Map3 = () => {
       </g>
 
     </svg>
-    </>
+    </div>
     )
     }
 export default Map3

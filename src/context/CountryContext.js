@@ -8,6 +8,7 @@ const CountryContext = createContext();
 
 export const CountryProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selected, setSelected] = useState([]);
   const [mapColor, setMapColor] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -20,8 +21,12 @@ export const CountryProvider = ({ children }) => {
   const [loggingIn, setLoggingIn] = useState(true);
   const [mobileView, setMobileView] = useState(false);
 
-  // Initialize theme based on system preference
+  // Initialize view and theme based on device/system preference
   useEffect(() => {
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    setMobileView(isMobile);
+
     const query = window.matchMedia('(prefers-color-scheme: dark)');
     const updateTheme = (isDark) => {
       setMode(!isDark);
@@ -39,15 +44,22 @@ export const CountryProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const [countriesData, religionsData] = await Promise.all([
           countriesService(),
           relService()
         ]);
+        
+        if (!countriesData || countriesData.length === 0) {
+          throw new Error("API failed and no local backup available.");
+        }
+        
         setCountries(Array.isArray(countriesData) ? countriesData : []);
         setReligions(Array.isArray(religionsData) ? religionsData : []);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
+      } catch (err) {
+        console.error("Error fetching initial data:", err);
+        setError(err.message || "An unexpected error occurred.");
       } finally {
         setLoading(false);
       }
@@ -119,6 +131,7 @@ export const CountryProvider = ({ children }) => {
 
   const value = {
     loading,
+    error,
     countries,
     religions,
     selected,

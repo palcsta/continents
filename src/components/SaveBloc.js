@@ -8,7 +8,7 @@ import '../styles/SaveBloc.css'
 import { saveBlocService } from '../services/blocService'
 import { useCountry } from '../context/CountryContext'
 
-const SaveBlocForm = () => {
+const SaveBlocForm = ({ size }) => {
     const { selected, user, updateBlocList } = useCountry();
     const [blocName, setBlocName] = useState('')
     const [showSaveBlocForm, setShowSaveBlocForm] = useState(false)
@@ -56,7 +56,7 @@ const SaveBlocForm = () => {
                     <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
                         <OverlayTrigger overlay={<Tooltip id="tooltip-disabled" style={{display:user?"none":"inline"}}>You must be logged in to do this.</Tooltip>}>
 <span>
-                            <Button disabled={!user} style={{ pointerEvents: !user?'none':'auto' }} onClick={()=>firstPress()}><MdLibraryAdd/>New Bloc</Button> 
+                            <Button disabled={!user} style={{ pointerEvents: !user?'none':'auto' }} onClick={()=>firstPress()}size={size}><MdLibraryAdd/>New Bloc</Button> 
 </span>
                             </OverlayTrigger>
                     </IconContext.Provider>
@@ -69,8 +69,8 @@ const SaveBlocForm = () => {
                         </div>
 
                         <IconContext.Provider value={{ size: "1.25em", className: "saveButtonIcon" }}>
-                            <Button variant="primary" type="submit" style={{marginRight:"0.2em"}}><MdSave/> Save</Button>
-                            <Button variant="secondary" onClick={()=>{pressCancel();setBlocSaveProblem("")}}>Cancel</Button>
+                            <Button variant="primary" type="submit" style={{marginRight:"0.2em"}} size={size}><MdSave/> Save</Button>
+                            <Button variant="secondary" onClick={()=>{pressCancel();setBlocSaveProblem("")}} size={size}>Cancel</Button>
                         </IconContext.Provider>
                     </form>
             }
