@@ -6,7 +6,11 @@ import { useCountry } from "../context/CountryContext";
 const Map3 = () => {
   const { countries, mapColor, showDetail, clickOne, mode: appMode, mobileView } = useCountry();
   let svgRef = useRef(null);
-  let mode = appMode ? "black" : "white"
+  
+  // Land color: white for light mode, dark grey for dark mode
+  let landBaseColor = appMode ? "#2c2c2c" : "white"
+  // Ocean color: light blue for light mode, darker blue for dark mode
+  let oceanColor = appMode ? "#1a3a4a" : "#a0d8f1"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
@@ -125,9 +129,9 @@ const Map3 = () => {
       if (myColorObj) {
         c.style.fill = myColorObj.color;
       } else if (c.getAttribute('data-type') === 'ocean') {
-        c.style.fill = '#a0d8f1'; // light blue for water
+        c.style.fill = oceanColor;
       } else {
-        c.style.fill = mode;
+        c.style.fill = landBaseColor;
       }
 
       // Highlight border if this country is being shown in details
@@ -147,7 +151,7 @@ const Map3 = () => {
 
   useEffect(() => {
     updateElements();
-  }, [mapColor, mode, countries, showDetail]);
+  }, [mapColor, landBaseColor, oceanColor, countries, showDetail]);
 
   useEffect(() => {
     if (mobileView && wrapperRef.current) {
