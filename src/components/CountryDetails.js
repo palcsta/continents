@@ -3,10 +3,6 @@ import Button from 'react-bootstrap/Button'
 import { numberChanger } from '../utils/formatters'
 import { useCountry } from '../context/CountryContext'
 
-const toLeft = {
-  "paddingLeft": "3em"
-}
-
 const CountryDetails = () => {
   const { 
     countries, 
@@ -17,8 +13,7 @@ const CountryDetails = () => {
     selectOne, 
     deselectOne, 
     mode,
-    mobileView,
-    setShowDetail 
+    mobileView 
   } = useCountry();
 
   if (!countries) return (<>NO DATA in CountryDetails</>)
@@ -36,34 +31,35 @@ const CountryDetails = () => {
 
   const style = {
     display: 'flex',
-    flexDirection: mobileView ? 'column' : 'row',
-    border: '3px solid ' + color,
-    alignItems: mobileView ? 'flex-start' : 'center',
+    flexDirection: 'row',
+    border: (mobileView ? '2px solid ' : '3px solid ') + color,
+    alignItems: 'center',
     borderRadius: '10px',
     color: textColor,
-    padding: '10px',
+    padding: mobileView ? '5px' : '10px',
     marginBottom: '10px',
-    gap: '15px',
-    flexWrap: 'wrap'
+    gap: mobileView ? '8px' : '15px',
+    flexWrap: 'wrap',
+    fontSize: mobileView ? '0.85rem' : 'inherit'
   }
 
   const flagStyle = {
-    border: '2px solid ' + (mode ? '#333' : '#eee'),
+    border: '1px solid ' + (mode ? '#333' : '#eee'),
     borderRadius: '4px',
-    maxWidth: mobileView ? '150px' : '220px',
-    maxHeight: mobileView ? '100px' : '140px',
+    maxWidth: mobileView ? '80px' : '220px',
+    maxHeight: mobileView ? '60px' : '140px',
     width: 'auto',
     height: 'auto',
-    margin: '5px',
+    margin: mobileView ? '2px' : '5px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   }
 
   const coaStyle = {
-    maxWidth: mobileView ? '80px' : '120px',
-    maxHeight: mobileView ? '80px' : '120px',
+    maxWidth: mobileView ? '40px' : '120px',
+    maxHeight: mobileView ? '40px' : '120px',
     width: 'auto',
     height: 'auto',
-    margin: '5px'
+    margin: mobileView ? '2px' : '5px'
   }
 
   let country = countries.find(c => c.cca2.toLowerCase() === showDetail)
@@ -108,10 +104,10 @@ const CountryDetails = () => {
     return (
       <div style={style}>
         <div>
-          <h2>{name}</h2>
+          <h2 style={{ fontSize: mobileView ? '1.1rem' : '1.5rem', marginBottom: '5px' }}>{name}</h2>
           <b>Classification:</b> {type}
           <br />
-          <p>This is a major geographic body of water.</p>
+          <p style={{ margin: 0 }}>This is a major geographic body of water.</p>
         </div>
       </div>
     )
@@ -167,41 +163,39 @@ const CountryDetails = () => {
     const coaUrl = getLocalAsset('coa', country.cca2)
 
     return (
-      <>
-        <div style={style}>
-          <div>
-            <h2>
-              <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={`https://en.wikipedia.org/wiki/${country.name.common}`}>
-                {country.name.common}
-              </a> ({country.cca2}{country.nativeName === country.name.common ? "" : ", " + (country.name.official || "")},{country.flag})
-            </h2>
-            <b>capital:</b> {capital}
-          </div>
-          <Button style={{ margin: "1%" }} target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"} size={mobileView ? "sm" : undefined}>YouTube<br />trending</Button>
-          <Button style={{ margin: "1%" }} target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"} size={mobileView ? "sm" : undefined}>find in <br />Google Maps</Button>
-          <Button style={{ margin: "1%" }} variant={isSelected ? "outline-warning" : "outline-primary"} size={mobileView ? "sm" : undefined}
+      <div style={style}>
+        <div style={{ flex: mobileView ? '1 1 100%' : 'none' }}>
+          <h2 style={{ fontSize: mobileView ? '1.1rem' : '1.5rem', marginBottom: '5px' }}>
+            <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={`https://en.wikipedia.org/wiki/${country.name.common}`}>
+              {country.name.common}
+            </a> ({country.cca2}{country.nativeName === country.name.common ? "" : ", " + (country.name.official || "")},{country.flag})
+          </h2>
+          <b>cap.</b>: {capital}
+        </div>
+
+        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+          <Button target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"} size={"sm"}>YouTube</Button>
+          <Button target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"} size={"sm"}>Maps</Button>
+          <Button variant={isSelected ? "outline-warning" : "outline-primary"} size={"sm"}
             onClick={() => { isSelected ? deselectOne(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
-            {isSelected ? <>Deselect<br />on map</> : <>Select<br />on map</>}
+            {isSelected ? <>Deselect</> : <>Select</>}
           </Button>
         </div>
 
-        <div style={style}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: mobileView ? '5px' : '15px', flexWrap: 'wrap' }}>
           {flagUrl && <img style={flagStyle} src={flagUrl} alt={`${country.name.common} flag`} />}
           {coaUrl && <img style={coaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
           
           <div>
-            <i><b>pop.</b></i>: {numberChanger(country.population)}
-            <br />
-            <b>area:</b> {numberChanger(country.area)} km<sup>2</sup>
-            <br />
-            <b>region:</b> {subregion}
-            <br />
-            <b>time: </b>{calcTime(offset)}
+            <i><b>pop.</b></i>: {numberChanger(country.population)} | 
+            <b> area:</b> {numberChanger(country.area)} km<sup>2</sup> | 
+            <b> reg:</b> {subregion} | 
+            <b> time: </b>{calcTime(offset)}
           </div>
 
           <div>
             <div>
-              <b><i><span style={toLeft}>language(s):</span></i></b>
+              <b><i>language(s):</i></b>
               {languages.length > 0 ? languages.map((x, i) => (
                 <React.Fragment key={x}>
                   | <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"}>{x}</a>
@@ -210,15 +204,12 @@ const CountryDetails = () => {
               )) : " N/A"}
             </div>
             <div>
-              <b><span style={toLeft}>Religion:</span></b> {rel[0] !== undefined ? rel[0].religion : " no data "}
-              <br />
-              <b><span style={toLeft}>Currency:</span></b> {currencyData}
-              <br />
-              <button hidden onClick={() => setShowDetail(null)}>hide</button>
+              <b>Religion:</b> {rel[0] !== undefined ? rel[0].religion : " no data "} | 
+              <b> Currency:</b> {currencyData}
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 
