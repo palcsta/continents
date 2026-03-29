@@ -7,10 +7,11 @@ const Map3 = () => {
   const { countries, mapColor, showDetail, clickOne, mode: appMode, mobileView } = useCountry();
   let svgRef = useRef(null);
   
-  // Land color: white for light mode, dark grey for dark mode
-  let landBaseColor = appMode ? "#2c2c2c" : "white"
-  // Ocean color: brighter in light mode, deeper in dark mode for clearer contrast
-  let oceanColor = appMode ? "#102838" : "#c9f1ff"
+  // Base fills per theme:
+  // light mode => black land, brighter ocean
+  // dark mode => softer grey land, muted grey ocean
+  let landBaseColor = appMode ? "#000000" : "#8a8a8a"
+  let oceanColor = appMode ? "#d9f3ff" : "#9aa7b0"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
