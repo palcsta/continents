@@ -30,36 +30,35 @@ const CountryDetails = () => {
   const linkColor = mode ? '#007bff' : '#4dabff'
 
   const style = {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'grid',
     border: (mobileView ? '2px solid ' : '3px solid ') + color,
-    alignItems: 'center',
     borderRadius: '10px',
     color: textColor,
-    padding: mobileView ? '5px' : '10px',
-    marginBottom: '10px',
-    gap: mobileView ? '8px' : '15px',
-    flexWrap: 'wrap',
-    fontSize: mobileView ? '0.85rem' : 'inherit'
+    padding: mobileView ? '6px 8px' : '8px 12px',
+    marginBottom: mobileView ? '6px' : '8px',
+    gap: mobileView ? '6px' : '10px',
+    fontSize: mobileView ? '0.85rem' : '0.95rem',
+    gridTemplateColumns: mobileView ? '1fr' : 'minmax(0, 1.7fr) auto',
+    alignItems: 'start'
   }
 
   const flagStyle = {
     border: '1px solid ' + (mode ? '#333' : '#eee'),
     borderRadius: '4px',
-    maxWidth: mobileView ? '80px' : '220px',
-    maxHeight: mobileView ? '60px' : '140px',
+    maxWidth: mobileView ? '72px' : '160px',
+    maxHeight: mobileView ? '48px' : '96px',
     width: 'auto',
     height: 'auto',
-    margin: mobileView ? '2px' : '5px',
+    margin: 0,
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   }
 
   const coaStyle = {
-    maxWidth: mobileView ? '40px' : '120px',
-    maxHeight: mobileView ? '40px' : '120px',
+    maxWidth: mobileView ? '36px' : '72px',
+    maxHeight: mobileView ? '36px' : '72px',
     width: 'auto',
     height: 'auto',
-    margin: mobileView ? '2px' : '5px'
+    margin: 0
   }
 
   let country = countries.find(c => c.cca2.toLowerCase() === showDetail)
@@ -104,7 +103,7 @@ const CountryDetails = () => {
     return (
       <div style={style}>
         <div>
-          <h2 style={{ fontSize: mobileView ? '1.1rem' : '1.5rem', marginBottom: '5px' }}>{name}</h2>
+          <h2 style={{ fontSize: mobileView ? '1rem' : '1.25rem', marginBottom: '4px', lineHeight: 1.1 }}>{name}</h2>
           <b>Classification:</b> {type}
           <br />
           <p style={{ margin: 0 }}>This is a major geographic body of water.</p>
@@ -164,50 +163,69 @@ const CountryDetails = () => {
 
     return (
       <div style={style}>
-        <div style={{ flex: mobileView ? '1 1 100%' : 'none' }}>
-          <h2 style={{ fontSize: mobileView ? '1.1rem' : '1.5rem', marginBottom: '5px' }}>
-            <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={`https://en.wikipedia.org/wiki/${country.name.common}`}>
-              {country.name.common}
-            </a> ({country.cca2}{country.nativeName === country.name.common ? "" : ", " + (country.name.official || "")},{country.flag})
-          </h2>
-          <b>cap.</b>: {capital}
+        <div style={{ minWidth: 0 }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: mobileView ? '1fr' : 'auto 1fr',
+            gap: mobileView ? '6px' : '10px',
+            alignItems: 'start'
+          }}>
+            <div style={{
+              display: 'flex',
+              gap: mobileView ? '6px' : '10px',
+              alignItems: 'center',
+              flexWrap: 'nowrap'
+            }}>
+              {flagUrl && <img style={flagStyle} src={flagUrl} alt={`${country.name.common} flag`} />}
+              {coaUrl && <img style={coaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
+            </div>
+
+            <div style={{ minWidth: 0 }}>
+              <h2 style={{
+                fontSize: mobileView ? '1rem' : '1.2rem',
+                margin: 0,
+                lineHeight: 1.15
+              }}>
+                <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={`https://en.wikipedia.org/wiki/${country.name.common}`}>
+                  {country.name.common}
+                </a> ({country.cca2}{country.nativeName === country.name.common ? "" : ", " + (country.name.official || "")},{country.flag})
+              </h2>
+              <div style={{ marginTop: '2px' }}>
+                <b>cap.</b>: {capital}
+              </div>
+              <div style={{ marginTop: '2px' }}>
+                <i><b>pop.</b></i>: {numberChanger(country.population)} | <b>area:</b> {numberChanger(country.area)} km<sup>2</sup> | <b>reg:</b> {subregion} | <b>time:</b> {calcTime(offset)}
+              </div>
+              <div style={{ marginTop: '2px' }}>
+                <b><i>language(s):</i></b>
+                {languages.length > 0 ? languages.map((x, i) => (
+                  <React.Fragment key={x}>
+                    {i === 0 ? ' ' : ' | '}
+                    <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"}>{x}</a>
+                  </React.Fragment>
+                )) : " N/A"}
+              </div>
+              <div style={{ marginTop: '2px' }}>
+                <b>Religion:</b> {rel[0] !== undefined ? rel[0].religion : "no data"} | <b>Currency:</b> {currencyData}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: mobileView ? 'row' : 'column',
+          justifyContent: mobileView ? 'flex-start' : 'center',
+          alignItems: mobileView ? 'stretch' : 'flex-end',
+          gap: '6px',
+          flexWrap: mobileView ? 'wrap' : 'nowrap'
+        }}>
           <Button target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"} size={"sm"}>YouTube</Button>
           <Button target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"} size={"sm"}>Maps</Button>
           <Button variant={isSelected ? "outline-warning" : "outline-primary"} size={"sm"}
             onClick={() => { isSelected ? deselectOne(country.cca2.toLowerCase()) : selectOne(country.cca2.toLowerCase()) }}>
             {isSelected ? <>Deselect</> : <>Select</>}
           </Button>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: mobileView ? '5px' : '15px', flexWrap: 'wrap' }}>
-          {flagUrl && <img style={flagStyle} src={flagUrl} alt={`${country.name.common} flag`} />}
-          {coaUrl && <img style={coaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
-          
-          <div>
-            <i><b>pop.</b></i>: {numberChanger(country.population)} | 
-            <b> area:</b> {numberChanger(country.area)} km<sup>2</sup> | 
-            <b> reg:</b> {subregion} | 
-            <b> time: </b>{calcTime(offset)}
-          </div>
-
-          <div>
-            <div>
-              <b><i>language(s):</i></b>
-              {languages.length > 0 ? languages.map((x, i) => (
-                <React.Fragment key={x}>
-                  | <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"}>{x}</a>
-                  {i === languages.length - 1 ? ' |' : ''}
-                </React.Fragment>
-              )) : " N/A"}
-            </div>
-            <div>
-              <b>Religion:</b> {rel[0] !== undefined ? rel[0].religion : " no data "} | 
-              <b> Currency:</b> {currencyData}
-            </div>
-          </div>
         </div>
       </div>
     )
