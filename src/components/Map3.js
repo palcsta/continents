@@ -9,8 +9,8 @@ const Map3 = () => {
   
   // Land color: white for light mode, dark grey for dark mode
   let landBaseColor = appMode ? "#2c2c2c" : "white"
-  // Ocean color: light blue for light mode, darker blue for dark mode
-  let oceanColor = appMode ? "#1a3a4a" : "#a0d8f1"
+  // Ocean color: brighter in light mode, deeper in dark mode for clearer contrast
+  let oceanColor = appMode ? "#102838" : "#c9f1ff"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 

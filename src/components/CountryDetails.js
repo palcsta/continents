@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import { numberChanger } from '../utils/formatters'
 import { useCountry } from '../context/CountryContext'
@@ -15,8 +15,9 @@ const CountryDetails = () => {
     mode,
     mobileView 
   } = useCountry();
-
-  if (!countries) return (<>NO DATA in CountryDetails</>)
+  const containerRef = useRef(null)
+  const actionsRef = useRef(null)
+  const [layoutWidth, setLayoutWidth] = useState(0)
 
   let color = "blue"
   if (showDetail) {
@@ -61,9 +62,34 @@ const CountryDetails = () => {
     margin: 0
   }
 
-  let country = countries.find(c => c.cca2.toLowerCase() === showDetail)
+  let country = countries ? countries.find(c => c.cca2.toLowerCase() === showDetail) : null
   let isSelected = selected.includes(showDetail)
   let rel = (country && religions) ? religions.filter(x => x.country === country.name.common) : []
+
+  const countryKey = country ? country.cca2 : null
+
+  useLayoutEffect(() => {
+    const node = containerRef.current
+    if (!node) return undefined
+
+    const updateLayoutWidth = () => {
+      setLayoutWidth(node.clientWidth || 0)
+    }
+
+    updateLayoutWidth()
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateLayoutWidth)
+      return () => window.removeEventListener('resize', updateLayoutWidth)
+    }
+
+    const observer = new ResizeObserver(updateLayoutWidth)
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [showDetail, mobileView, countryKey])
+
+  if (!countries) return (<>NO DATA in CountryDetails</>)
   
   let currencyData = "no currency data"
   if (country && country.currencies) {
@@ -160,24 +186,66 @@ const CountryDetails = () => {
 
     const flagUrl = getLocalAsset('flag', country.cca2)
     const coaUrl = getLocalAsset('coa', country.cca2)
+    const detailWeight =
+      country.name.common.length +
+      (country.name.official || '').length +
+      languages.join(', ').length +
+      (rel[0] && rel[0].religion ? rel[0].religion.length : 0)
+    const actionWidth = actionsRef.current ? actionsRef.current.clientWidth : 0
+    const useSideActions = !mobileView && layoutWidth >= 520 + actionWidth + Math.min(detailWeight * 1.2, 320)
+    const useWideFacts = layoutWidth >= (mobileView ? 360 : 760)
+    const assetsBesideTitle = layoutWidth >= (mobileView ? 240 : 640)
+    const cardStyle = {
+      ...style,
+      gridTemplateColumns: useSideActions ? 'minmax(0, 1fr) auto' : '1fr'
+    }
+    const visualBlockStyle = {
+      display: 'grid',
+      gridTemplateColumns: assetsBesideTitle ? 'auto minmax(0, 1fr)' : '1fr',
+      gap: mobileView ? '6px' : '10px',
+      alignItems: 'start'
+    }
+    const imageRowStyle = {
+      display: 'flex',
+      gap: mobileView ? '6px' : '12px',
+      alignItems: 'center',
+      justifyContent: assetsBesideTitle ? 'flex-start' : 'center',
+      flexWrap: 'nowrap'
+    }
+    const factsGridStyle = {
+      display: 'grid',
+      gridTemplateColumns: `repeat(auto-fit, minmax(${useWideFacts ? (mobileView ? 150 : 180) : 140}px, 1fr))`,
+      gap: mobileView ? '4px' : '6px',
+      marginTop: mobileView ? '4px' : '6px'
+    }
+    const factStyle = {
+      border: '1px solid ' + (mode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.16)'),
+      borderRadius: '6px',
+      padding: mobileView ? '3px 6px' : '4px 8px',
+      lineHeight: 1.2,
+      minWidth: 0
+    }
+    const actionStackStyle = {
+      display: 'flex',
+      flexDirection: useSideActions ? 'column' : 'row',
+      justifyContent: useSideActions ? 'center' : 'flex-start',
+      alignItems: useSideActions ? 'stretch' : 'center',
+      gap: '6px',
+      flexWrap: useSideActions ? 'nowrap' : 'wrap'
+    }
+    const biggerCoaStyle = {
+      ...coaStyle,
+      maxWidth: mobileView ? '56px' : '96px',
+      maxHeight: mobileView ? '56px' : '96px'
+    }
 
     return (
-      <div style={style}>
+      <div ref={containerRef} style={cardStyle}>
         <div style={{ minWidth: 0 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: mobileView ? '1fr' : 'auto 1fr',
-            gap: mobileView ? '6px' : '10px',
-            alignItems: 'start'
-          }}>
-            <div style={{
-              display: 'flex',
-              gap: mobileView ? '6px' : '10px',
-              alignItems: 'center',
-              flexWrap: 'nowrap'
-            }}>
+          <div style={visualBlockStyle}>
+            <div style={imageRowStyle}>
               {flagUrl && <img style={flagStyle} src={flagUrl} alt={`${country.name.common} flag`} />}
-              {coaUrl && <img style={coaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
+              {coaUrl && <img style={biggerCoaStyle} src={coaUrl} alt={`${country.name.common} coat of arms`} />}
             </div>
 
             <div style={{ minWidth: 0 }}>
@@ -193,33 +261,41 @@ const CountryDetails = () => {
               <div style={{ marginTop: '2px' }}>
                 <b>cap.</b>: {capital}
               </div>
-              <div style={{ marginTop: '2px' }}>
-                <i><b>pop.</b></i>: {numberChanger(country.population)} | <b>area:</b> {numberChanger(country.area)} km<sup>2</sup> | <b>reg:</b> {subregion} | <b>time:</b> {calcTime(offset)}
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <b><i>language(s):</i></b>
-                {languages.length > 0 ? languages.map((x, i) => (
-                  <React.Fragment key={x}>
-                    {i === 0 ? ' ' : ' | '}
-                    <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"}>{x}</a>
-                  </React.Fragment>
-                )) : " N/A"}
-              </div>
-              <div style={{ marginTop: '2px' }}>
-                <b>Religion:</b> {rel[0] !== undefined ? rel[0].religion : "no data"} | <b>Currency:</b> {currencyData}
-              </div>
+            </div>
+          </div>
+
+          <div style={factsGridStyle}>
+            <div style={factStyle}>
+              <i><b>pop.</b></i>: {numberChanger(country.population)}
+            </div>
+            <div style={factStyle}>
+              <b>area:</b> {numberChanger(country.area)} km<sup>2</sup>
+            </div>
+            <div style={factStyle}>
+              <b>reg:</b> {subregion}
+            </div>
+            <div style={factStyle}>
+              <b>time:</b> {calcTime(offset)}
+            </div>
+            <div style={{ ...factStyle, gridColumn: useWideFacts ? 'span 2' : 'auto' }}>
+              <b><i>language(s):</i></b>
+              {languages.length > 0 ? languages.map((x, i) => (
+                <React.Fragment key={x}>
+                  {i === 0 ? ' ' : ' | '}
+                  <a target="_blank" rel="noopener noreferrer" style={{ color: linkColor }} href={"https://wikipedia.org/wiki/" + x + "_language"}>{x}</a>
+                </React.Fragment>
+              )) : " N/A"}
+            </div>
+            <div style={factStyle}>
+              <b>Religion:</b> {rel[0] !== undefined ? rel[0].religion : "no data"}
+            </div>
+            <div style={{ ...factStyle, gridColumn: useWideFacts ? 'span 2' : 'auto' }}>
+              <b>Currency:</b> {currencyData}
             </div>
           </div>
         </div>
 
-        <div style={{
-          display: 'flex',
-          flexDirection: mobileView ? 'row' : 'column',
-          justifyContent: mobileView ? 'flex-start' : 'center',
-          alignItems: mobileView ? 'stretch' : 'flex-end',
-          gap: '6px',
-          flexWrap: mobileView ? 'wrap' : 'nowrap'
-        }}>
+        <div ref={actionsRef} style={actionStackStyle}>
           <Button target="_blank" href={"https://kworb.net/youtube/trending/" + country.cca2.toLowerCase() + ".html"} variant={"danger"} size={"sm"}>YouTube</Button>
           <Button target="_blank" href={country.maps ? country.maps.googleMaps : "#"} variant={"success"} size={"sm"}>Maps</Button>
           <Button variant={isSelected ? "outline-warning" : "outline-primary"} size={"sm"}
