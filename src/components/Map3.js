@@ -9,9 +9,9 @@ const Map3 = () => {
   
   // Base fills per theme:
   // light mode => black land, brighter ocean
-  // dark mode => softer grey land, muted grey ocean
+  // dark mode => softer grey land, darker ocean
   let landBaseColor = appMode ? "#000000" : "#8a8a8a"
-  let oceanColor = appMode ? "#d9f3ff" : "#9aa7b0"
+  let oceanColor = appMode ? "#eef9ff" : "#6f7d88"
   
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
